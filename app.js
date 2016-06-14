@@ -16,6 +16,12 @@ function GetFirstWord(str){
         return str.substr(0, str.indexOf(' '));
 };
 
+function getHandle(user){
+  slack.users.info({token, user}, (err,data) => {
+    return data.name;
+  })
+};
+
 /*slack.im.open({token, user: "U1EH544TV"}, (err, data) => {
   console.log(data);
 
@@ -32,7 +38,8 @@ bot.message((message) => {
     slack.im.open({token, user}, (err, data) => {
         channel = data.channel.id;
         username = "recaptain";
-        slack.chat.postMessage({token, channel, username, icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png", text: "It's Lit"}, (a, data)        => console.log("this point"));
+        slack.chat.postMessage({token, channel, username, icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png", text: "It's Lit"}, (a, data) => 
+          console.log("@"+ getHandle(user) + ": " + text));
 })
     /*slack.im.history({token, channel}, (err, data) => {
     if (err) {
