@@ -16,23 +16,31 @@ function GetFirstWord(str){
         return str.substr(0, str.indexOf(' '));
 };
 
+/*slack.im.open({token, user: "U1EH544TV"}, (err, data) => {
+  console.log(data);
+
+  slack.chat.postMessage({token, channel: data.channel.id, text: "blah"}, (a, data) => console.log(data));
+
+})*/
+
 bot.message((message) => {
   let { channel, text, user, username } = message;
   parse(text);
   // if first word is recap, respond and get channel history
   if(GetFirstWord(text) == "<@U1GF1N0CQ>:"){
-    console.log(message);
-    // Open DM if there isn't already one. 
+    console.log("message recieve");
     slack.im.open({token, user}, (err, data) => {
-        slack.chat.postMessage({token, channel: data.channel.id, text: "It's Lit"}, (a, data)        => console.log("this point")); // posts message content.
+        channel = data.channel.id;
+        username = "recaptain";
+        slack.chat.postMessage({token, channel, username, icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png", text: "It's Lit"}, (a, data)        => console.log("this point"));
 })
-    slack.im.history({token, channel}, (err, data) => {
+    /*slack.im.history({token, channel}, (err, data) => {
     if (err) {
       console.log(err);
     }
 
     console.log(data);
-    });
+    });*/
   };
 });
 
