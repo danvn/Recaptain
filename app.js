@@ -16,11 +16,7 @@ function GetFirstWord(str) {
         return str.substr(0, str.indexOf(' '));
 };
 
-function getHandle(user) {
-  slack.users.info({token, user}, (err,data) => {
-    return data.name;
-  })
-};
+
 
 
 // introduction function.
@@ -41,10 +37,19 @@ bot.message((message) => {
       console.log("promise initiatied");
       // see if message is bot mention
       if(GetFirstWord(text) == "<@U1GF1N0CQ>:"){
+        console.log(">> New @recaptain mention instance");
+        console.log("userid: " + user);
+
+        // Convert userid --> handle
+        slack.users.info({token, user}, (err,data) => {
+        console.log("       |\n       --> @" + data.user.name + ": " + text + "\n");
+        var handle = data.user.name;
+        });
+
         //Get string without bot mention
         var myString = text;
         myString = myString.replace('<@U1GF1N0CQ>: ','');   
-        console.log(myString);
+        console.log("Message: " + myString);
         //Open IM if there isn't already one
         slack.im.open({token, user}, (err, data) => {
           channel = data.channel.id;
@@ -52,7 +57,7 @@ bot.message((message) => {
           // Reply posts go here based on what they ask for. 
           slack.chat.postMessage({token, channel, username, icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png", 
             text: "whatever"}, (a, data) => 
-                   console.log("@"+ getHandle(user) + ": " + text));
+                   console.log("@"+ user + ": " + text));
         })
       };
     })
