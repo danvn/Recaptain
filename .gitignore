@@ -5,6 +5,9 @@ logs
 *.log
 npm-debug.log*
 
+# Alex's needed gitignores
+*.swp
+
 # Runtime data
 pids
 *.pid
