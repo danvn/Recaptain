@@ -58,4 +58,30 @@ describe('Parser Tests', () => {
       });
     });
   });
+
+  describe('Module Extractor', () => {
+    it('Links Single', () => {
+      return parse('foxden links')
+        .then((result) => {
+          result.links.should.be.true;
+          result.mentions.should.be.false;
+        });
+    });
+
+    it('Mentions single', () => {
+      return parse('foxden mentions')
+        .then((result) => {
+          result.mentions.should.be.true;
+          result.links.should.be.false;
+        });
+    });
+
+    it('Mentions and Links', () => {
+      return parse('foxden mentions and links')
+        .then((result) => {
+          result.mentions.should.be.true;
+          result.links.should.be.true;
+        });
+    });
+  });
 });
