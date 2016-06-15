@@ -16,7 +16,27 @@ function GetFirstWord(str) {
         return str.substr(0, str.indexOf(' '));
 };
 
+function getHandle(user) {
+  slack.users.info({token, user}, (err,data) => {
+    return data.name;
+  })
+};
 
+function checkMentions(str) {
+    str = str.match(/<(.*)>/);
+    if (str != null)
+        console.log("You wanted mentions");
+    else
+        console.log("failed to grab mentions");
+};
+
+function checkLink(str) {
+    str = str.match(/(links)/);
+    if (str != null)
+        console.log("You wanted links");
+    else
+        console.log("failed to grab links");
+};
 
 
 // introduction function.
@@ -37,27 +57,26 @@ bot.message((message) => {
       console.log("promise initiatied");
       // see if message is bot mention
       if(GetFirstWord(text) == "<@U1GF1N0CQ>:"){
-        console.log(">> New @recaptain mention instance");
-        console.log("userid: " + user);
-
-        // Convert userid --> handle
-        slack.users.info({token, user}, (err,data) => {
-        console.log("       |\n       --> @" + data.user.name + ": " + text + "\n");
-        var handle = data.user.name;
-        });
 
         //Get string without bot mention
         var myString = text;
         myString = myString.replace('<@U1GF1N0CQ>: ','');   
-        console.log("Message: " + myString);
+        console.log(myString);
+
+        // Check if they had a mention
+        checkMentions(myString);
+           
+        // Check if they wanted links
+        checkLink(myString);
         //Open IM if there isn't already one
         slack.im.open({token, user}, (err, data) => {
           channel = data.channel.id;
           username = "recaptain";
+
           // Reply posts go here based on what they ask for. 
           slack.chat.postMessage({token, channel, username, icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png", 
             text: "whatever"}, (a, data) => 
-                   console.log("@"+ user + ": " + text));
+                   console.log("@"+ getHandle(user) + ": " + text));
         })
       };
     })
