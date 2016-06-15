@@ -59,7 +59,7 @@ function checkLink(str) {
 
 
 bot.message((message) => {
-  let { channel, text, user, username } = message;
+  let { channel, text, user, username, ts } = message;
   parse(text)
     .then((result) => {
       console.log("\npromise initiatied");
@@ -67,7 +67,7 @@ bot.message((message) => {
       if(GetFirstWord(text) == "<@U1GF1N0CQ>:"){
         console.log(">> New @recaptain mention instance:");
         console.log("    --> userid: " + user);
-
+        console.log("    --> timestamp: " + ts);
         // Convert userid --> handle
         slack.users.info({token, user}, (err,data) => {
         console.log("       |\n       --> @" + data.user.name + ": " + text + "\n");
