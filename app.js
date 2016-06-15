@@ -94,7 +94,7 @@ bot.message((message) => {
 
           // Reply posts go here based on what they ask for. 
           slack.chat.postMessage({token, channel, username, icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png", 
-            text: "whatever"}, (a, data) => 
+            text: JSON.stringify(result)}, (a, data) => 
                    console.log("@"+ getHandle(user) + ": " + text));
         })
       };
