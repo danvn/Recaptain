@@ -36,9 +36,9 @@ exports.recap = (message, ast) => {
                               text: JSON.stringify(ast),
                               attachments: '[{"title": "Title", "text": "messages go here \n \n \n \n \n ", "color": "#78CD22"}]'}, (a, data) => 
                              console.log("@"+ getHandle(user) + ": " + text));
-    })
+    });
   };
-}
+};
 
 exports.help = (message, ast) => {
     console.log("they initiated help"); 
