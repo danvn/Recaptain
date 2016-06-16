@@ -11,17 +11,19 @@ exports.recap = (message, ast) => {
     console.log("Message: " + myString);
 
 
-    let modules_list = [];
-    //check mentions and links
-    if(ast.mentions == true)
-      modules_list.push(modules.mentions());
+    getHistory(channel)
+      .then((result) => {
+        let modules_list = [];
+        //check mentions and links
+        if(ast.mentions == true)
+          modules_list.push(modules.mentions(result, message, ast));
 
 
-    if(ast.links == true)
-      modules_list.push(modules.keyword());
+        if(ast.links == true)
+          modules_list.push(modules.keyword(result, message, ast));
 
-
-    Promise.all(modules_list)
+        return Promise.all(modules_list);
+      })
       .then((result) => {
         //Open IM if there isn't already one
         slack.im.open({token, user}, (err, data) => {
@@ -35,6 +37,9 @@ exports.recap = (message, ast) => {
                                  console.log("@"+ getHandle(user) + ": " + text));
         });
       });
+    
+
+
   };
 }
 
@@ -56,7 +61,7 @@ exports.help = (message, ast) => {
         attachments: '[{"title": "How to use me", "text": "@recapbot: recap [keywords] [timeframe]", "color": "#36a64f"}, {"title": "Built in keywords", "text": "Mentions: Gets mentions of you with keywords \n Links: Gets links with keywords", "color": "#439FE0"}, {"title": "Example", "text": "@recaptain: links sales from past week \n This gets all the links with the keyword sales from the past week", "color": "#FF6600"}]',
         text}, (a, data) =>
             console.log("helped"));
-            })
+       });
         };
     })
     .catch((err) => {
@@ -73,23 +78,23 @@ function GetFirstWord(str) {
 
 
 function getHandle(user) {
-return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     slack.users.info({token, user}, (err, data) => {
-        name = JSON.stringify(data.user.name);
-        resolve(name);
-    })
-});
+      name = JSON.stringify(data.user.name);
+      resolve(name);
+    });
+  });
 };
 
 function getHistory(channel){
-return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     console.log("IN FUNCTION ->>>" + channel);
     let c = channel;
     slack.channels.history({token, channel: c}, (err, data) => {
-	if (err) reject(err);
-	else resolve(data);
-    })   
-});
+	    if (err) reject(err);
+	    else resolve(data);
+    });
+  });
 };
 
 
