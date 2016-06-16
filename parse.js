@@ -1,4 +1,5 @@
 var moment = require('moment');
+var nlp = require('nlp-toolkit');
 
 module.exports = (text) => {
   return new Promise((resolve) => {
@@ -21,9 +22,12 @@ module.exports = (text) => {
       ast[m[1]] = true;
     }
 
-    ast.keywords = text.split(' ');
-
-    resolve(ast);
+    nlp.stopwords(nlp.tokenizer(text), { defaultLang: 'en'  })
+      .then((res) => {
+        console.log(res);
+        ast.keywords = text.split(' ');
+        resolve(ast);
+      });
   });
 };
 

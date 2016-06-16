@@ -12,6 +12,7 @@
   "dependencies": {
     "lodash": "^4.13.1",
     "moment": "^2.13.0",
+    "nlp-toolkit": "^0.2.6",
     "slack": "^7.3.0"
   },
   "devDependencies": {

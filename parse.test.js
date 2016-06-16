@@ -15,7 +15,7 @@ describe('Parser Tests', () => {
       });
 
       it('hour with past keyword', () => {
-        return parse('foxden past hour')
+        return parse('with foxden and closed one from the past hour')
           .then((result) => {
             result.date.hours().should.equal(current_hour);
           });
