@@ -47,6 +47,7 @@ bot.message((message) => {
   for(let r of command_reg) {
     if (r[0].exec(text) != null) {
       text = text.replace(r[0], '')
+
       fn = r[1];
     }
   }
