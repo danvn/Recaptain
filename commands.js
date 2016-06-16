@@ -1,5 +1,25 @@
+var slack = require('slack');
+var token = process.env.token;
+
+function GetFirstWord(str) {
+    if (str.indexOf(' ' ) == -1)
+        return str;
+    else
+        return str.substr(0, str.indexOf(' ' ));
+};
+
+
+function getHandle(user) {
+    slack.users.info({token, user}, (err, data) => {
+        return data.name;
+    })
+};
+
+
 exports.recap = (message, ast) => {
   let { channel, text, user, username, ts } = message;
+  console.log("AST IS THIS" + ast);
+  console.log("MESSAGE IS THIS" + message);
   if(GetFirstWord(text) == "<@U1GF1N0CQ>:") {
        console.log(">> New @recaptain mention instance:");
        console.log("    --> userid: " + user);
@@ -15,10 +35,10 @@ exports.recap = (message, ast) => {
     myString = myString.replace('<@U1GF1N0CQ>: ','');   
     console.log("Message: " + myString);
 
-    if(result.mentions == true)
+    if(ast.mentions == true)
       console.log("You had mentions");
 
-    if(result.links == true)
+    if(ast.links == true)
       console.log("You had links");
 
 
@@ -29,7 +49,7 @@ exports.recap = (message, ast) => {
 
       // Reply posts go here based on what they ask for. 
       slack.chat.postMessage({token, channel, username, icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png", 
-                              text: JSON.stringify(result),
+                              text: JSON.stringify(ast),
                               attachments: '[{"title": "Title", "text": "messages go here \n \n \n \n \n ", "color": "#78CD22"}]'}, (a, data) => 
                              console.log("@"+ getHandle(user) + ": " + text));
     })
