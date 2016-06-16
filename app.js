@@ -2,6 +2,8 @@
 
 // variable setup
 var slack = require('slack');
+var _ = require('lodash');
+var commands = require('./commands');
 var parse = require('./parse');
 //var token = "xoxb-50511748432-Rztd1yjENcRHpJ9llAfMQbpo";
 var bot = slack.rtm.client();
@@ -14,14 +16,6 @@ function GetFirstWord(str) {
         return str;
     else
         return str.substr(0, str.indexOf(' '));
-};
-
-function checkMentions(str) {
-    str = str.match(/<(.*)>/);
-    if (str != null)
-        console.log("You wanted mentions");
-    else
-        console.log("failed to grab mentions");
 };
 
 function getHandle(user) {
