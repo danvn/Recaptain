@@ -1,28 +1,14 @@
 'use strict'
 
 // variable setup
-var slack = require('slack');
 var _ = require('lodash');
 var commands = require('./commands');
 var parse = require('./parse');
 //var token = "xoxb-50511748432-Rztd1yjENcRHpJ9llAfMQbpo";
+var slack = require('slack');
 var bot = slack.rtm.client();
 var token = process.env.token;
 bot.listen({token:token});
-
-//function to check if 1st word is recap
-function GetFirstWord(str) {
-    if (str.indexOf(' ') == -1)
-        return str;
-    else
-        return str.substr(0, str.indexOf(' '));
-};
-
-function getHandle(user) {
-  slack.users.info({token, user}, (err,data) => {
-    return data.name;
-  })
-};
 
 
 // introduction function.
