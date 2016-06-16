@@ -1,18 +1,10 @@
 var slack = require('slack');
 var token = process.env.token;
+var parse = require('./parse');
 
 exports.recap = (message, ast) => {
   let { channel, text, user, username, ts } = message;
   if(GetFirstWord(text) == "<@U1GF1N0CQ>:") {
-       console.log(">> New @recaptain mention instance:");
-       console.log("    --> userid: " + user);
-       console.log("    --> timestamp: " + ts);
-       // Convert userid --> handle
-       slack.users.info({token, user}, (err,data) => {
-       console.log("       |\n       --> @" + data.user.name + ": " + text + "\n");
-         var handle = data.user.name; 
-       });
-
     //Get string without bot mention
     var myString = text; // Message body
     myString = myString.replace('<@U1GF1N0CQ>: ','');   
@@ -26,6 +18,7 @@ exports.recap = (message, ast) => {
 
 
     if(ast.links == true)
+<<<<<<< HEAD
       modules_list.push(modules.keyword());
 
 
@@ -59,6 +52,7 @@ exports.help = (message, ast) => {
         channel = data.channel.id;
         username = "recaptain";
         text = ("Hey" + name  + ", Heard you needed help!");
+
         slack.chat.postMessage({token, channel, username, icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png", 
         attachments: '[{"title": "How to use me", "text": "@recapbot: recap [keywords] [timeframe]", "color": "#36a64f"}, {"title": "Built in keywords", "text": "Mentions: Gets mentions of you with keywords \n Links: Gets links with keywords", "color": "#439FE0"}, {"title": "Example", "text": "@recaptain: links sales from past week \n This gets all the links with the keyword sales from the past week", "color": "#FF6600"}]',
         text}, (a, data) =>
@@ -85,6 +79,17 @@ return new Promise((resolve, reject) => {
         name = JSON.stringify(data.user.name);
         resolve(name);
     })
+});
+};
+
+function getHistory(channel){
+return new Promise((resolve, reject) => {
+    console.log("IN FUNCTION ->>>" + channel);
+    let c = channel;
+    slack.channels.history({token, channel: c}, (err, data) => {
+	if (err) reject(err);
+	else resolve(data);
+    })   
 });
 };
 
