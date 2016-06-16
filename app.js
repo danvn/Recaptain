@@ -35,7 +35,6 @@ bot.message((message) => {
       text = text.replace(r[0], '')
 
       fn = r[1];
-      console.log(fn);
     }
   }
 
