@@ -24,22 +24,6 @@ function getHandle(user) {
   })
 };
 
-function checkMentions(str) {
-    str = str.match(/<(.*)>/);
-    if (str != null)
-        console.log("You wanted mentions");
-    else
-        console.log("failed to grab mentions");
-};
-
-function checkLink(str) {
-    str = str.match(/(links)/);
-    if (str != null)
-        console.log("You wanted links");
-    else
-        console.log("failed to grab links");
-};
-
 
 // introduction function.
 /*bot.started(function() {
@@ -73,13 +57,12 @@ bot.message((message) => {
         myString = myString.replace('<@U1GF1N0CQ>: ','');   
         console.log("Message: " + myString);
 
-        // Check if they had a mention
-        checkMentions(myString);
+        if(result.mentions == true)
+            console.log("You had mentions");
 
-        // Check if they wanted links
-        checkLink(myString);
+        if(result.links == true)
+            console.log("You had links");
 
-        console.log(myString);
 
         //Open IM if there isn't already one
         slack.im.open({token, user}, (err, data) => {
