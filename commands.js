@@ -18,25 +18,31 @@ exports.recap = (message, ast) => {
     myString = myString.replace('<@U1GF1N0CQ>: ','');   
     console.log("Message: " + myString);
 
+
+    let modules_list = [];
     //check mentions and links
     if(ast.mentions == true)
-      console.log("You had mentions");
+      modules_list.push(modules.mentions());
+
 
     if(ast.links == true)
-      console.log("You had links");
+      modules_list.push(modules.keyword());
 
 
-    //Open IM if there isn't already one
-    slack.im.open({token, user}, (err, data) => {
-      channel = data.channel.id;
-      username = "recaptain";
+    Promise.all(modules_list)
+      .then((result) => {
+        //Open IM if there isn't already one
+        slack.im.open({token, user}, (err, data) => {
+          channel = data.channel.id;
+          username = "recaptain";
 
-      // Reply posts go here based on what they ask for. 
-      slack.chat.postMessage({token, channel, username, icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png", 
-                              text: JSON.stringify(ast),
-                              attachments: '[{"title": "Title", "text": "messages go here \n \n \n \n \n ", "color": "#78CD22"}]'}, (a, data) => 
-                             console.log("@"+ getHandle(user) + ": " + text));
-    })
+          // Reply posts go here based on what they ask for. 
+          slack.chat.postMessage({token, channel, username, icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png", 
+                                  text: JSON.stringify(result),
+                                  attachments: '[{"title": "Title", "text": "messages go here \n \n \n \n \n ", "color": "#78CD22"}]'}, (a, data) => 
+                                 console.log("@"+ getHandle(user) + ": " + text));
+        });
+      });
   };
 }
 
