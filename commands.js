@@ -18,7 +18,6 @@ exports.recap = (message, ast) => {
 
 
     if(ast.links == true)
-<<<<<<< HEAD
       modules_list.push(modules.keyword());
 
 
