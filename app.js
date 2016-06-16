@@ -39,16 +39,17 @@ function getHandle(user) {
 bot.message((message) => {
   let { channel, text, user, username, ts } = message;
   const command_reg = [
-    [/^recap/i, commands.recap],
-    [/^help/i, commands.help]
+    [/^recap|:\srecap|:recap/i, commands.recap],
+    [/^help|:\shelp|:help/i, commands.help]
   ];
 
-  const fn = () => null;
+  let fn = () => null;
   for(let r of command_reg) {
     if (r[0].exec(text) != null) {
       text = text.replace(r[0], '')
 
       fn = r[1];
+      console.log(fn);
     }
   }
 
