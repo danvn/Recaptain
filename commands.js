@@ -11,7 +11,7 @@ exports.recap = (message, ast) => {
     console.log("Message: " + myString);
 
 
-    getHistory(channel)
+    getHistory(channel, ast.date)
       .then((result) => {
         let modules_list = [];
         //check mentions and links
@@ -76,25 +76,32 @@ function GetFirstWord(str) {
         return str.substr(0, str.indexOf(' ' ));
 };
 
-
 function getHandle(user) {
-  return new Promise((resolve, reject) => {
+  new Promise((resolve, reject) => {
     slack.users.info({token, user}, (err, data) => {
       name = JSON.stringify(data.user.name);
-      resolve(name);
+      console.log(name);
+      return resolve(name);
+      //return name;
     });
   });
 };
 
-function getHistory(channel){
+function getHistory(channel, oldest){
   return new Promise((resolve, reject) => {
     console.log("IN FUNCTION ->>>" + channel);
     let c = channel;
-    slack.channels.history({token, channel: c}, (err, data) => {
+    let start = oldest;
+    slack.channels.history({token, channel: c, oldest: start }, (err, data) => {
+      console.log(data.messages);
+      console.log(" --- MOST RECENT MESSAGE ---");
+      console.log(data.messages[0]);
 	    if (err) reject(err);
 	    else resolve(data);
     });
   });
 };
+
+
 
 
