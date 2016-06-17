@@ -24,7 +24,7 @@ exports.recap = (message, ast) => {
         if(ast.links == true)
           modules_list.push(modules.keyword(result.messages, message, ast));
 
-        modules_list.push(modules.keyword(result.messages, message, ast));
+        //modules_list.push(modules.keyword(result.messages, message, ast));
 
         return Promise.all(modules_list);
       })
@@ -40,12 +40,11 @@ exports.recap = (message, ast) => {
         channel = result.channel.id;
         username = "recaptain";
         icon = "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png";
-        text =  "Here is your recap";
         attach = _.map(module_responses, (e) => {
           return {
             text: e,
             color: "#36a64f",
-            title: "We found these messages for you!"
+            title: "Here is your recap!"
           };
         });
 
