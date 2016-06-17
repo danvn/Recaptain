@@ -13,7 +13,7 @@ exports.recap = (message, ast) => {
     console.log("Message: " + myString);
 
 
-    slack.history(channel)
+    slack.history(channel, ast.date.time)
 	  .then((result) => {
       let modules_list = [];
         //check mentions and links
