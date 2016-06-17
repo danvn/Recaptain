@@ -1,6 +1,8 @@
-var slack = require('slack');
 var token = process.env.token;
 var parse = require('./parse');
+var modules = require('./modules');
+var _ = require('lodash');
+var slack = require('./slack');
 
 exports.recap = (message, ast) => {
   let { channel, text, user, username, ts } = message;
@@ -11,11 +13,20 @@ exports.recap = (message, ast) => {
     console.log("Message: " + myString);
 
 
-    getHistory(channel, ast.date)
-      .then((result) => {
+    slack.history(channel)
+	  .then((result) => {
+	      /*console.log(_.map(result.messages, (e) => {
+		  if (e.attachments) return e.attachments;
+	      }));*/
+        console.log(result);
         let modules_list = [];
         //check mentions and links
         if(ast.mentions == true)
+          console.log(result);
+          console.log("--------------------------------------------------------------------");
+          console.log("-------------------------------------------------------------------")
+          console.log("------------------------------------------------------------------");;
+          console.log(ast);
           modules_list.push(modules.mentions(result, message, ast));
 
 
@@ -32,11 +43,14 @@ exports.recap = (message, ast) => {
 
           // Reply posts go here based on what they ask for. 
           slack.chat.postMessage({token, channel, username, icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png", 
-                                  text: JSON.stringify(result),
+                                  text: "HEY",
                                   attachments: '[{"title": "Title", "text": "messages go here \n \n \n \n \n ", "color": "#78CD22"}]'}, (a, data) => 
-                                 console.log("@"+ getHandle(user) + ": " + text));
+                                 console.log("@WHAT UP " + text));
         });
-      });
+      })
+	  .catch((err) => {
+	      console.log(err);
+	  });
     
 
 
@@ -86,22 +100,4 @@ function getHandle(user) {
     });
   });
 };
-
-function getHistory(channel, oldest){
-  return new Promise((resolve, reject) => {
-    console.log("IN FUNCTION ->>>" + channel);
-    let c = channel;
-    let start = oldest;
-    slack.channels.history({token, channel: c, oldest: start }, (err, data) => {
-      console.log(data.messages);
-      console.log(" --- MOST RECENT MESSAGE ---");
-      console.log(data.messages[0]);
-	    if (err) reject(err);
-	    else resolve(data);
-    });
-  });
-};
-
-
-
 
