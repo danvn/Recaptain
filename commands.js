@@ -13,40 +13,48 @@ exports.recap = (message, ast) => {
     console.log("Message: " + myString);
 
 
-    slack.history(channel, ast.date.time)
-	  .then((result) => {
-      let modules_list = [];
+    slack
+      .history(channel, ast.date)
+	    .then((result) => {
+        let modules_list = [];
         //check mentions and links
-      if(ast.mentions == true)
-        modules_list.push(modules.mentions(result.messages, message, ast));
+        if(ast.mentions == true)
+          modules_list.push(modules.mentions(result.messages, message, ast));
 
-      if(ast.links == true)
+        if(ast.links == true)
+          modules_list.push(modules.keyword(result.messages, message, ast));
+
         modules_list.push(modules.keyword(result.messages, message, ast));
 
         return Promise.all(modules_list);
       })
-      .then((result) => {
+      .then((module_responses) => {
         //Open IM if there isn't already one
-        slack.im(token, user) 
+        return slack.im(token, user)
           .then((result) => {
-          
-          channel = result.channel.id;
-          username = "recaptain";
-          icon = "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png";
-          text =  "HEY";
-          attach = '[{"title": "Title", "text": "messages go here \n \n \n \n \n ", "color": "#78CD22"}]';  
-
-          slack.post(token, channel, text, icon, username, attach)
-            .then((result) => {
-                console.log("message posted");
-            });    
+            return { result, module_responses }
           });
-
-        
       })
-	  .catch((err) => {
+      .then((res) => {
+        let { result, module_responses } = res;
+        channel = result.channel.id;
+        username = "recaptain";
+        icon = "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png";
+        text =  "Here is your recap";
+        attach = _.map(module_responses, (e) => {
+          return {
+            text: e
+          };
+        });
+
+        return slack.post(token, channel, text, icon, username, attach);
+      })
+      .then((result) => {
+        console.log("message posted: ", result);
+      })
+	    .catch((err) => {
 	      console.log(err);
-	  });
+	    });
   };
 };
 
