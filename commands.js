@@ -16,11 +16,11 @@ exports.recap = (message, ast) => {
         let modules_list = [];
         //check mentions and links
         if(ast.mentions == true)
-          modules_list.push(modules.mentions(result, message, ast));
+          modules_list.push(modules.mentions(result.messages, message, ast));
 
 
         if(ast.links == true)
-          modules_list.push(modules.keyword(result, message, ast));
+          modules_list.push(modules.keyword(result.messages, message, ast));
 
         return Promise.all(modules_list);
       })

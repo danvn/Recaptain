@@ -2,9 +2,9 @@ var _ = require('lodash');
 
 exports.mentions = (messages, message, ast) => {
   return new Promise((resolve, reject) => {
-    
-
-    resolve('mentions');
+    resolve(_.filter(messages, (e) => {
+        return e.text.contains(message.user);
+    }));
   });
 };
 
