@@ -7,7 +7,7 @@ module.exports = (text) => {
       keywords: [],
       mentions: false,
       links: false,
-      date: null
+      date: moment().subtract(3, 'days')
     };
 
     let date = parseDate(text);
