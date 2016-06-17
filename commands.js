@@ -43,7 +43,9 @@ exports.recap = (message, ast) => {
         text =  "Here is your recap";
         attach = _.map(module_responses, (e) => {
           return {
-            text: e
+            text: e,
+            color: "#36a64f",
+            title: "We found these messages for you!"
           };
         });
 
