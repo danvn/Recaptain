@@ -15,27 +15,13 @@ exports.recap = (message, ast) => {
 
     slack.history(channel)
 	  .then((result) => {
-	      /*console.log(_.map(result.messages, (e) => {
-		  if (e.attachments) return e.attachments;
-	      }));*/
-        console.log(result);
-        let modules_list = [];
+      let modules_list = [];
         //check mentions and links
-        if(ast.mentions == true)
-<<<<<<< HEAD
-          modules_list.push(modules.mentions(result.messages, message, ast));
-=======
-          console.log(result);
-          console.log("--------------------------------------------------------------------");
-          console.log("-------------------------------------------------------------------")
-          console.log("------------------------------------------------------------------");;
-          console.log(ast);
-          modules_list.push(modules.mentions(result, message, ast));
->>>>>>> 96bbaf2dfde5f77df9c9a1e42651303c0c1f347b
+      if(ast.mentions == true)
+        modules_list.push(modules.mentions(result.messages, message, ast));
 
-
-        if(ast.links == true)
-          modules_list.push(modules.keyword(result.messages, message, ast));
+      if(ast.links == true)
+        modules_list.push(modules.keyword(result.messages, message, ast));
 
         return Promise.all(modules_list);
       })
