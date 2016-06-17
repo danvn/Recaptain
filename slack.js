@@ -1,15 +1,19 @@
 var slack = require('slack');
 var token = process.env.token;
 
-exports.history = (channel) => { 
+exports.history = (channel, oldest) => { 
     return new Promise((resolve, reject) => {
-      let c = channel
-      slack.channels.history({token, channel: c}, (err, data) => {
+      let c = channel;
+      let start = oldest;
+      slack.channels.history({token, channel, oldest}, (err, data) => {
+            console.log("--- MOST RECENT MESSAGE ---");
+            console.log(data.messages[0]);
             if (err) reject(err);
             else resolve(data);
 }); 
 });
 };
+
 
 exports.im = (token, user) => {
     return new Promise((resolve, reject) => {
