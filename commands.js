@@ -41,11 +41,8 @@ exports.recap = (message, ast) => {
 	  .catch((err) => {
 	      console.log(err);
 	  });
-    
-
-
   };
-}
+};
 
 exports.help = (message, ast) => {
     console.log("they initiated help"); 
