@@ -45,8 +45,6 @@ bot.message((message) => {
   }
 
   message.text = text;
-  console.log("message text", message);
-
   fn(message);
 });
 

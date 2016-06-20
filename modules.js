@@ -3,15 +3,15 @@ var _ = require('lodash');
 exports.mentions = (messages, message, ast) => {
   return new Promise((resolve, reject) => {
     let list = _.chain(messages)
-          .filter((e) => e.text.includes(message.user.id))
+          .filter((e) => e.text.includes(message.user))
           .take(5)
-          .map((e) => e.username + ': ' + e.text)
+          .map((e) => "<@" + e.user + ">"  + ': ' + e.text)
           .value();
 
     let response = "We could not find any mentions of you.";
 
     if (list.length > 0) {
-      response = _.join(messages, '\n');
+      response = _.join(list, '\n');
     }
 
     resolve(response);

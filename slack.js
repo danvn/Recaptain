@@ -1,9 +1,9 @@
 var slack = require('slack');
 var token = process.env.token;
 
-exports.history = (channel, oldest) => { 
+exports.history = (channel, oldest) => {
   return new Promise((resolve, reject) => {
-    slack.channels.history({token, channel, oldest: oldest.toDate().getTime()}, (err, data) => {
+    slack.channels.history({token, channel, oldest: (oldest.toDate().getTime() / 1000)}, (err, data) => {
         if (err) reject(err);
         else resolve(data);
       }); 
