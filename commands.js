@@ -25,10 +25,8 @@ exports.recap = (message) => {
       if(ast.mentions == true)
         modules_list.push(modules.mentions(messages, message, ast));
 
-      if(ast.links == true)
-        modules_list.push(modules.keyword(messages, message, ast));
-
-      //modules_list.push(modules.keyword(result.messages, message, ast));
+      else
+        modules_list.push(modules.keyword(result.messages, message, ast));
 
       return Promise.all(modules_list);
     })
