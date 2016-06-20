@@ -24,6 +24,12 @@ bot.listen({token:token});
 
 bot.message((message) => {
   let { channel, text, user, username, ts } = message;
+
+  if(GetFirstWord(text) == "<@U1GF1N0CQ>:") {
+    //Get string without bot mention
+    text = text.replace('<@U1GF1N0CQ>: ','');
+  }
+
   const command_reg = [
     [/^recap|:\srecap|:recap/i, commands.recap],
     [/^help|:\shelp|:help/i, commands.help]
@@ -32,21 +38,34 @@ bot.message((message) => {
   let fn = () => null;
   for(let r of command_reg) {
     if (r[0].exec(text) != null) {
-      text = text.replace(r[0], '')
+      text = text.replace(r[0], '');
 
       fn = r[1];
     }
   }
 
-  parse(text)
-    .then((result) => {
-      console.log("\npromise initiatied");
-      // see if message is bot mention
-      fn(message, result);
-    })
-  .catch((err) => {
-      // handle parse error
-        console.log(err);
-    });
+  message.text = text;
+  console.log("message text", message);
+
+  fn(message);
 });
 
+function GetFirstWord(str) {
+  if (str.indexOf(' ' ) == -1)
+    return str;
+  else
+    return str.substr(0, str.indexOf(' ' ));
+};
+
+function getHandle(token, user) {
+  return new Promise((resolve, reject) => {
+    console.log("INSIDE GETHANDLE " + user);
+    slack.userdata(token, user) 
+      .then((result) => {
+        name = JSON.stringify(result.user.name);
+        console.log(name);
+        resolve(name);
+        //return name;
+      });
+  });
+};
