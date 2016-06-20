@@ -55,15 +55,4 @@ function GetFirstWord(str) {
     return str.substr(0, str.indexOf(' ' ));
 };
 
-function getHandle(token, user) {
-  return new Promise((resolve, reject) => {
-    console.log("INSIDE GETHANDLE " + user);
-    slack.userdata(token, user) 
-      .then((result) => {
-        name = JSON.stringify(result.user.name);
-        console.log(name);
-        resolve(name);
-        //return name;
-      });
-  });
-};
+
