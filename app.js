@@ -17,7 +17,7 @@ bot.listen({token:token});
         slack.chat.postMessage({token, channel: data.channel.id, username: "recaptain", text: "Welcome to recaptain!", icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png"}, (a, data) => {
         console.log("@@@");
 })
-      
+
 })
 });*/
 
