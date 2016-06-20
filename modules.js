@@ -21,7 +21,7 @@ exports.mentions = (messages, message, ast) => {
 exports.keyword = (messages, message, ast) => {
   return new Promise((resolve, reject) => {
     let list = _.chain(messages)
-          .filter((e) => _.reduce(ast.keywords, (exists, e) => !exists ? e.text.includes(e) : true, false))
+          .filter((e) => _.reduce(ast.keywords, (exists, keyword) => !exists ? e.text.includes(keyword) : true, false))
           .take(5)
           .map((e) => e.text);
 
