@@ -66,24 +66,33 @@ exports.help = (message, ast) => {
 
     getHandle(token, user)
         .then((result) => {
-            name = result;
+            return name = result;
+        })
+        .then((result) => {
+            return slack.im(token, user)
+        })
+        .then((result) => {
+           channel = result.channel.id;
+           username = "recaptain";
+           text = ("Hey" + name  + ", Heard you needed help!");
 
-            if(GetFirstWord(text) == "<@U1GF1N0CQ>:") {
-                slack.im(token, user)
-                  .then((result) => {
-                    channel = result.channel.id;
-                    username = "recaptain";
-                    text = ("Hey" + name  + ", Heard you needed help!");
-
-                    attach =  [{"title": "How to use me", "text": "@recaptain: recap [keywords] [timeframe]", "color": "#36a64f"}, {"title": "Built in keywords", "text": "Mentions: Gets mentions of you with keywords \n Links: Gets links with keywords", "color": "#439FE0"}, {"title": "Example", "text": "@recaptain: links sales from past week \n This gets all the links with the keyword sales from the past week", "color": "#FF6600"}];
-                    slack.post(token, channel, text, icon, username, attach)
-                      .then((result) => {
-                        console.log("helped");
-                      });
-                    });
-            };
+           attach =  [{"title": "How to use me", "text": "@recaptain: recap [keywords] [timeframe]", "color": "#36a64f"}, {"title": "Built in keywords", "text": "Mentions: Gets mentions of you with keywords \n Links: Gets links with keywords", "color": "#439FE0"}, {"title": "Example", "text": "@recaptain: links sales from past week \n This gets all the links with the keyword sales from the past week", "color": "#FF6600"}];
+           slack.post(token, channel, text, icon, username, attach)
        })
        .catch((err) => {
          console.log(err);
        });
+};
+
+function getHandle(token, user) {
+  return new Promise((resolve, reject) => {
+    console.log("INSIDE GETHANDLE " + user);
+    slack.userdata(token, user) 
+      .then((result) => {
+        name = JSON.stringify(result.user.name);
+        console.log(name);
+        resolve(name);
+        //return name;
+      });
+  });
 };
