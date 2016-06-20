@@ -27,13 +27,13 @@ exports.links = (messages, message, ast) => {
 exports.keyword = (messages, message, ast) => {
   return new Promise((resolve, reject) => {
     let list = _.chain(messages)
-        .filter((e) => _.reduce(ast.keywords, (exists, keyword) => {
-	    if (!exists) {
-		return e.text.includes(keyword);
-	    } else {
-		return exists;
-	    }
-	}, false))
+          .filter((e) => _.reduce(ast.keywords, (exists, keyword) => {
+	          if (!exists) {
+		          return e.text.includes(keyword);
+	          } else {
+		          return exists;
+	          }
+	        }, false))
           .take(5)
           .map((e) => e.text)
           .value();
