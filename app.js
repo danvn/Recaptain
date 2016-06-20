@@ -45,6 +45,34 @@ bot.message((message) => {
   }
 
   message.text = text;
+
+  if (message.text == "<@U1GF1N0CQ|recaptain> has joined the channel"){
+      var channelMembers;
+    //console.log("@recaptain has joined a channel.");
+      slack.channels.info({token, channel}, (err, data) => {
+        console.log("data.channel.members: " + data.channel.members);
+        channelMembers = data.channel.members;
+        var firstMember = channelMembers[0];
+        console.log("channelMembers: " + channelMembers);
+        // console.log(channelMembers[0]);
+        // for (var i=0; i < data.channel.members.length; i++){
+        //   // console.log(data.channel.members[i]);
+
+        return new Promise((resolve, reject) => {
+          slack.im.open({token, user: firstMember}, (err, data) => {
+            console.log("firstMember: " + firstMember);
+            console.log("\nfirstMembers IM data: " + data.channel.id);
+            if (err) reject(err);
+            else resolve(data);
+            // console.log("User's Direct Message Channel ID: " + dmChannel);
+          });
+        });
+
+      });
+
+
+  };
+
   fn(message);
 });
 
