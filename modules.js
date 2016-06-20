@@ -18,6 +18,12 @@ exports.mentions = (messages, message, ast) => {
   });
 };
 
+exports.links = (messages, message, ast) => {
+  return new Promise((resolve, reject) => {
+    
+  });
+};
+
 exports.keyword = (messages, message, ast) => {
   return new Promise((resolve, reject) => {
     let list = _.chain(messages)
