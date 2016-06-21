@@ -22,10 +22,16 @@ exports.recap = (message) => {
 
       let modules_list = [];
       //check mentions and links
-      if(ast.mentions == true)
-        modules_list.push(modules.mentions(messages, message, ast));
+      if((ast.mentions == true) && (ast.keywords.length != 0))
+        modules_list.push(modules.keymentions(messages, message, ast));
       
-      if(ast.links == true)
+      if((ast.mentions == true) && (ast.keywords.length == 0 ))
+        modules_list.push(modules.mentions(messages, message, ast));
+
+      if((ast.links == true) && (ast.keywords.length != 0 ))
+        modules_list.push(modules.keylinks(messages, message, ast));
+
+      if((ast.links == true) && (ast.keywords.length == 0))
         modules_list.push(modules.links(messages, message, ast));
 
       if((ast.links == false) && (ast.mentions == false))
@@ -49,8 +55,8 @@ exports.recap = (message) => {
           text: e,
           color: "#36af4f",
           title: "Here is your recap!"
-          };      
-        })
+      };      
+    })
     };
     if(typeof module_responses[0] === 'object') {
       attachment = module_responses;
