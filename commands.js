@@ -24,8 +24,11 @@ exports.recap = (message) => {
       //check mentions and links
       if(ast.mentions == true)
         modules_list.push(modules.mentions(messages, message, ast));
+      
+      if(ast.links == true)
+        modules_list.push(modules.links(messages, message, ast));
 
-      else
+      if((ast.links == false) && (ast.mentions == false))
         modules_list.push(modules.keyword(result.messages, message, ast));
 
       return Promise.all(modules_list);
@@ -39,14 +42,20 @@ exports.recap = (message) => {
 
       channel = result.channel.id;
       username = "recaptain";
-
-      attach = _.map(module_responses, (e) => {
+      console.log(module_responses);
+    if (typeof module_responses[0] === 'string'){
+        attach = _.map(module_responses, (e) => {
         return {
           text: e,
-          color: "#36a64f",
+          color: "#36af4f",
           title: "Here is your recap!"
-        };
-      });
+          };      
+        })
+    };
+    if(typeof module_responses[0] === 'object') {
+      attachment = module_responses;
+      attach = attachment[0];
+    };
 
       return slack.post(token, channel, text, icon, username, attach);
     })
