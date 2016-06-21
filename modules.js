@@ -19,7 +19,20 @@ exports.mentions = (messages, message, ast) => {
 
 exports.links = (messages, message, ast) => {
   return new Promise((resolve, reject) => {
+    let list = _.chain(messages) 
+        .filter((e) => e.text.includes('http'))
+        .take(5)
+        .each((e) => console.log(JSON.stringify(e.attachments[0])))
+        .map((e) => e.attachments[0])
+        .value();
+    console.log(list);
+
+    let response = "We could not find any links";
     
+    if (list.length > 0) {
+        response = list;
+    }
+    resolve(response);
   });
 };
 
