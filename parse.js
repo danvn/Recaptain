@@ -1,5 +1,6 @@
 var moment = require('moment');
 var nlp = require('nlp-toolkit');
+var _ = require('lodash');
 
 module.exports = (text) => {
   return new Promise((resolve) => {
@@ -24,7 +25,7 @@ module.exports = (text) => {
 
     nlp.stopwords(nlp.tokenizer(text), { defaultLang: 'en'  })
       .then((res) => {
-        ast.keywords = text.split(' ');
+        ast.keywords = _.filter(text.split(' '), (e) => e != '');
         resolve(ast);
       });
   });
