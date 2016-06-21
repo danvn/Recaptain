@@ -4,7 +4,6 @@ exports.mentions = (messages, message, ast) => {
   return new Promise((resolve, reject) => {
     let list = _.chain(messages)
           .filter((e) => e.text.includes(message.user))
-          .take(5)
           .map((e) => "<@" + e.user + ">"  + ': ' + e.text)
           .value();
 
@@ -34,7 +33,6 @@ exports.keyword = (messages, message, ast) => {
 		          return exists;
 	          }
 	        }, false))
-          .take(5)
           .map((e) => e.text)
           .value();
 
