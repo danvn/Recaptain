@@ -3,8 +3,17 @@ var _ = require('lodash');
 exports.mentions = (messages, message, ast) => {
   return new Promise((resolve, reject) => {
     let list = _.chain(messages)
-          .filter((e) => e.text.includes(message.user))
-          .map((e) => "<@" + e.user + ">"  + ': ' + e.text)
+          .filter((e) => ((e.text.includes(message.user)) && (_.reduce(ast.keywords, (exists, keyword) => {
+        if(!exists) {
+            match = e.text.toLowerCase();
+            if (match.includes(keyword)){
+                return e.text;
+            }
+        }else{
+            return exists;
+        }
+          }, false))))
+          .map((e) => ("<@" + e.user + ">"  + ': ' + e.text))
           .value();
 
     let response = "We could not find any mentions of you.";
@@ -20,12 +29,19 @@ exports.mentions = (messages, message, ast) => {
 exports.links = (messages, message, ast) => {
   return new Promise((resolve, reject) => {
     let list = _.chain(messages) 
-        .filter((e) => e.text.includes('http'))
-        .take(5)
+        .filter((e) => ((e.text.includes('http')) && (_.reduce(ast.keywords, (exists, keyword) => {
+        if(!exists) {
+            match = e.text.toLowerCase();
+            if (match.includes(keyword)){
+                return e.text;
+            }
+        }else{
+            return exists;
+         }
+        }, false))))
         .each((e) => console.log(JSON.stringify(e.attachments[0])))
         .map((e) => e.attachments[0])
         .value();
-    console.log(list);
 
     let response = "We could not find any links";
     
