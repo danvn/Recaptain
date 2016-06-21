@@ -45,36 +45,87 @@ bot.message((message) => {
   }
 
   message.text = text;
+  // If recaptain is invited to a new channel
 
-  if (message.text == "<@U1GF1N0CQ|recaptain> has joined the channel"){
-      var channelMembers;
-    //console.log("@recaptain has joined a channel.");
-      slack.channels.info({token, channel}, (err, data) => {
-        console.log("data.channel.members: " + data.channel.members);
-        channelMembers = data.channel.members;
-        var firstMember = channelMembers[0];
-        console.log("channelMembers: " + channelMembers);
-        // console.log(channelMembers[0]);
-        // for (var i=0; i < data.channel.members.length; i++){
-        //   // console.log(data.channel.members[i]);
+    if (message.text == "<@U1GF1N0CQ|recaptain> has joined the channel"){
+        //console.log("getChannelMembers(token, message.channel: ")
+        var channelMembers;
 
-        return new Promise((resolve, reject) => {
-          slack.im.open({token, user: firstMember}, (err, data) => {
-            console.log("firstMember: " + firstMember);
-            console.log("\nfirstMembers IM data: " + data.channel.id);
-            if (err) reject(err);
-            else resolve(data);
-            // console.log("User's Direct Message Channel ID: " + dmChannel);
-          });
+        // Get user ID's of all members in channel bot was added to
+        slack.channels.info({token, channel}, (err, data) => {
+            channelMembers = data.channel.members;
+            console.log("channelMembers: " + channelMembers);
+                    
+                // Get each member of channels' direct message channel ID 
+                slack.im.open({token, user: channelMembers[0]}, (err, data) => {
+                    console.log(data);
+                    console.log("Direct Message data: " + data.channel.id);
+                    var dmID = data.channel.id;
+
+                    // Send direct message to that user in channel
+                    slack.chat.postMessage({token, 
+                        channel: dmID, 
+                        text: "Hi, I am Recaptain, I'm a robot that can summarize your channel's history.\nIf you'd like to learn more about how I can help you stay updated in your Slack channels, type in this command\n>@recaptain help",
+                        // attachments: [{
+                        //     "text": "@recaptain help", 
+                        //     "color": "5CABFF"}],
+                        username: "Recaptain",
+                        icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png",
+                    }, 
+                        (err, data)=>{
+                            if(err) console.log(err);
+                        })
+
+                });
         });
+        console.log("channelMembers: " + channelMembers);
 
-      });
+
+        //console.log("channelMembers[0]: " + channelMembers[0]);
+        // Get direct message channel ID of each userid in channel
 
 
-  };
+        // console.log("Bot added to a new channel.\n");
+        // console.log(channelMembers);
+        // for (var i = 0; i < channelMembers.length; i++){
+        //     openIMChannel(token, channelMembers[i]);
+        // }
+        // return new Promise((resolve, reject) => {
+        //   console.log("Promise entered.\n");
+        //   for (var i=0; i < channelMembers.length; i++){
+        //     console.log("\nLoop entered."+ i + " " + channelMembers[i]);
+
+        //     }
+        // });
+    };
 
   fn(message);
 });
+
+function getChannelMembers(token,channel){
+    return new Promise((resolve, reject) => {
+        slack.channels.info({token: token, channel: channel}, (err, data) => {
+            if (err) reject(err);
+            else resolve(data);
+            var channelMembers;
+            channelMembers = data.channel.members;
+            console.log(data);
+            console.log("channelMembers: " + channelMembers);
+            return channelMembers;
+        });
+    });
+}
+
+function openIMChannel(token, user){
+    slack.im.open({token: token, user: user}, (err, data) => {
+        // get each member of channels' direct message channel ID 
+        console.log(data);
+        console.log("Direct Message data: " + data.channel.id);
+        if (err) reject(err);
+        else resolve(data);
+        // console.log("User's Direct Message Channel ID: " + dmChannel);
+  });
+};
 
 function GetFirstWord(str) {
   if (str.indexOf(' ' ) == -1)
