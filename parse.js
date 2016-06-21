@@ -25,7 +25,7 @@ module.exports = (text) => {
 
     nlp.stopwords(nlp.tokenizer(text), { defaultLang: 'en'  })
       .then((res) => {
-        ast.keywords = _.filter(text.split(' '), (e) => e != '');
+        ast.keywords = _.filter(text.split(/\s/i), (e) => e != '');
         resolve(ast);
       });
   });
