@@ -55,7 +55,7 @@ bot.message((message) => {
         slack.channels.info({token, channel}, (err, data) => {
             channelMembers = data.channel.members;
             console.log("channelMembers: " + channelMembers);
-                    
+
                 // Get each member of channels' direct message channel ID 
                 slack.im.open({token, user: channelMembers[0]}, (err, data) => {
                     console.log(data);
