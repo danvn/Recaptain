@@ -22,16 +22,16 @@ exports.recap = (message) => {
 
       let modules_list = [];
       //check mentions and links
-      if((ast.mentions == true) && (ast.keywords.length != 0))
+      if((ast.mentions == true) && (ast.links == false) && (ast.keywords.length != 0)) 
         modules_list.push(modules.keymentions(messages, message, ast));
       
-      if((ast.mentions == true) && (ast.keywords.length == 0 ))
+      if((ast.mentions == true) && (ast.links == false) && (ast.keywords.length == 0 ))
         modules_list.push(modules.mentions(messages, message, ast));
 
-      if((ast.links == true) && (ast.keywords.length != 0 ))
+      if((ast.links == true) && (ast.mentions == false) && (ast.keywords.length != 0 ))
         modules_list.push(modules.keylinks(messages, message, ast));
 
-      if((ast.links == true) && (ast.keywords.length == 0))
+      if((ast.links == true) && (ast.mentions == false) && (ast.keywords.length == 0))
         modules_list.push(modules.links(messages, message, ast));
     
       if((ast.links == true) && (ast.mentions == true) && (ast.keywords.length == 0))

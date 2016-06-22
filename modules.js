@@ -102,13 +102,13 @@ exports.keyMentionLinks = (messages, message, ast) => {
 	          }
 	        }, false))))
         .each((e) => console.log(JSON.stringify(e.attachments[0])))
-        .map((e) => e.attachments[0])
+        .map((e) => "<@" + e.user + ">"  + ': ' + e.text)
         .value();
 
     let response = "We could not find any links";
     
     if (list.length > 0) {
-        response = list;
+        response = _.join(list, '\n');
     }
     resolve(response);
   });
@@ -120,15 +120,14 @@ exports.mentionLinks = (messages, message, ast) => {
   return new Promise((resolve, reject) => {
     let list = _.chain(messages) 
         .filter((e) => ((e.text.includes('http')) && (e.text.includes(message.user)))) 
-        .each((e) => console.log(e.text))
-        .map((e) => e.text)
+        .each((e) => console.log(e.attachments[0]))
+        .map((e) => "<@" + e.user + ">"  + ': ' + e.text)
         .value();
 
-    console.log("LIST ---- " + list);
     let response = "We could not find any links";
     
     if (list.length > 0) {
-        response = list;
+        response = _.join(list, '\n');
     }
     resolve(response);
   });
