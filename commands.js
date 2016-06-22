@@ -33,6 +33,12 @@ exports.recap = (message) => {
 
       if((ast.links == true) && (ast.keywords.length == 0))
         modules_list.push(modules.links(messages, message, ast));
+    
+      if((ast.links == true) && (ast.mentions == true) && (ast.keywords.length == 0))
+        modules_list.push(modules.mentionLinks(messages, message, ast));
+
+      if((ast.links == true) && (ast.mentions == true) && (ast.keywords.length != 0))
+        modules_list.push(modules.keyMentionLinks(messages, message, ast));
 
       if((ast.links == false) && (ast.mentions == false))
         modules_list.push(modules.keyword(result.messages, message, ast));
