@@ -45,7 +45,7 @@ bot.message((message) => {
   }
 
   message.text = text;
-  // If recaptain is invited to a new channel
+   // If recaptain is invited to a new channel
 
     if (message.text == "<@U1GF1N0CQ|recaptain> has joined the channel"){
         //console.log("getChannelMembers(token, message.channel: ")
@@ -55,9 +55,10 @@ bot.message((message) => {
         slack.channels.info({token, channel}, (err, data) => {
             channelMembers = data.channel.members;
             console.log("channelMembers: " + channelMembers);
-
+            console.log("channelMembers length: " + channelMembers.length);
+            for(var i = 0; i < channelMembers.length -1 ; i++){   
                 // Get each member of channels' direct message channel ID 
-                slack.im.open({token, user: channelMembers[0]}, (err, data) => {
+                slack.im.open({token, user: channelMembers[i]}, (err, data) => {
                     console.log(data);
                     console.log("Direct Message data: " + data.channel.id);
                     var dmID = data.channel.id;
@@ -65,7 +66,7 @@ bot.message((message) => {
                     // Send direct message to that user in channel
                     slack.chat.postMessage({token, 
                         channel: dmID, 
-                        text: "Hi, I am Recaptain, I'm a robot that can summarize your channel's history.\nIf you'd like to learn more about how I can help you stay updated in your Slack channels, type in this command\n>@recaptain help",
+                        text: "Hi! I'm Recaptain.\nI'm a robot that can summarize your channel's history.\nIf you'd like to learn more about how I can help you stay updated in your Slack channels, type in this command:\n>@recaptain: help",
                         // attachments: [{
                         //     "text": "@recaptain help", 
                         //     "color": "5CABFF"}],
@@ -77,8 +78,9 @@ bot.message((message) => {
                         })
 
                 });
+            };
+
         });
-        console.log("channelMembers: " + channelMembers);
 
 
         //console.log("channelMembers[0]: " + channelMembers[0]);
