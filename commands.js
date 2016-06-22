@@ -13,35 +13,24 @@ exports.recap = (message) => {
   console.log(text);
 
   parse(text)
-    .then((ast) => slack.history(channel, ast.date)
+    .then((ast) => slack.history("C1EG1RYR5", ast.date)
           .then((result) => {
-            return { messages: result.messages, ast };
+            return { messages: _.filter(result, (e) => e.text != null), ast };
           }))
 	  .then((result) => {
       let { messages, ast } = result;
 
       let modules_list = [];
       //check mentions and links
-      if((ast.mentions == true) && (ast.links == false) && (ast.keywords.length != 0)) 
-        modules_list.push(modules.keymentions(messages, message, ast));
-      
-      if((ast.mentions == true) && (ast.links == false) && (ast.keywords.length == 0 ))
+      if(ast.mentions == true)
         modules_list.push(modules.mentions(messages, message, ast));
 
-      if((ast.links == true) && (ast.mentions == false) && (ast.keywords.length != 0 ))
-        modules_list.push(modules.keylinks(messages, message, ast));
-
-      if((ast.links == true) && (ast.mentions == false) && (ast.keywords.length == 0))
+      if(ast.links == true)
         modules_list.push(modules.links(messages, message, ast));
-    
-      if((ast.links == true) && (ast.mentions == true) && (ast.keywords.length == 0))
-        modules_list.push(modules.mentionLinks(messages, message, ast));
 
-      if((ast.links == true) && (ast.mentions == true) && (ast.keywords.length != 0))
-        modules_list.push(modules.keyMentionLinks(messages, message, ast));
 
       if((ast.links == false) && (ast.mentions == false))
-        modules_list.push(modules.keyword(result.messages, message, ast));
+        modules_list.push(modules.keyword(messages, message, ast));
 
       return Promise.all(modules_list);
     })
@@ -52,25 +41,21 @@ exports.recap = (message) => {
     .then((res) => {
       let { result, module_responses } = res;
 
-      channel = result.channel.id;
-      username = "recaptain";
-      console.log(module_responses);
-    if (typeof module_responses[0] === 'string'){
-        attach = _.map(module_responses, (e) => {
-        return {
-          text: e,
-          color: "#36af4f",
-          title: "Here is your recap!"
-      };      
-    })
-    };
-    if(typeof module_responses[0] === 'object') {
-      attachment = module_responses;
-      attach = attachment[0];
-    };
+      let message = {
+        username: "recapitan",
+        channel: result.channel.id,
+        text: "",
+        attach: _.map(module_responses, (e) => {
+          return {
+            text: e,
+            color: "#36af4f",
+            title: "Here is your recap!"
+          };
+        })
+      };
 
-      return slack.post(token, channel, text, icon, username, attach);
-    })
+      return slack.post(token, message.channel, message.text, icon, message.username, message.attach);
+    }
     .then((result) => {
       console.log("message posted: ", result);
     })
