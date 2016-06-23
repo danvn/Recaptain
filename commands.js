@@ -13,7 +13,7 @@ exports.recap = (message) => {
   console.log(text);
 
   parse(text)
-    .then((ast) => slack.history("C1EG1RYR5", ast.date)
+    .then((ast) => slack.history("C1BBTSMGQ", ast.date)
           .then((result) => {
             return { messages: _.filter(result, (e) => e.text != null), ast };
           }))
@@ -55,13 +55,37 @@ exports.recap = (message) => {
       };
 
       return slack.post(token, message.channel, message.text, icon, message.username, message.attach);
-    }
+    })
     .then((result) => {
       console.log("message posted: ", result);
     })
 	  .catch((err) => {
 	    console.log(err);
 	  });
+};
+
+exports.onlyrecap = (message) => {
+    console.log("Only recap intitated");
+    let { channel, text, user, username, ts } = message;
+    slack.im(token, user)
+      .then((result) => {
+        if(result.channel.id == channel){
+            username = "recaptain";
+            
+            let message = {
+                username: "recaptain",
+                channel: result.channel.id,
+                text: "",
+                attach: [{
+                    text: "HEY",
+                    color: "#36af4f",
+                    title: "What up"
+                }]
+            }
+            return slack.post(token, message.channel, message.text, icon, message.username, message.attach);
+        }
+        else console.log("not a dm");
+        })  
 };
 
 exports.help = (message, ast) => {

@@ -31,8 +31,9 @@ bot.message((message) => {
   }
 
   const command_reg = [
-    [/^recap|:\srecap|:recap/i, commands.recap],
-    [/^help|:\shelp|:help/i, commands.help]
+    //[/^recap|:\srecap|:recap/i, commands.recap],
+    [/^help|:\shelp|:help/i, commands.help],
+    [/^recap$/i, commands.onlyrecap]
   ];
 
   let fn = () => null;
