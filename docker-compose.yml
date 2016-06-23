@@ -1,0 +1,11 @@
+elasticsearch:
+  image: elasticsearch  
+
+server:
+  build: .
+  links:
+    - elasticsearch
+  volumes:
+    - ".:/src/app"
+  environment:
+    - token=xoxb-50511748432-Rztd1yjENcRHpJ9llAfMQbpd
