@@ -46,8 +46,43 @@ bot.message((message) => {
   }
 
   message.text = text;
-   // If recaptain is invited to a new channel
+  fn(message);
+});
 
+function getChannelMembers(token,channel){
+    return new Promise((resolve, reject) => {
+        slack.channels.info({token: token, channel: channel}, (err, data) => {
+            if (err) reject(err);
+            else resolve(data);
+            var channelMembers;
+            channelMembers = data.channel.members;
+            console.log(data);
+            console.log("channelMembers: " + channelMembers);
+            return channelMembers;
+        });
+    });
+}
+
+function openIMChannel(token, user){
+    slack.im.open({token: token, user: user}, (err, data) => {
+        // get each member of channels' direct message channel ID 
+        console.log(data);
+        console.log("Direct Message data: " + data.channel.id);
+        if (err) reject(err);
+        else resolve(data);
+        // console.log("User's Direct Message Channel ID: " + dmChannel);
+  });
+};
+
+function GetFirstWord(str) {
+  if (str.indexOf(' ' ) == -1)
+    return str;
+  else
+    return str.substr(0, str.indexOf(' ' ));
+};
+
+// If recaptain is invited to a new channel
+/*
     if (message.text == "<@U1GF1N0CQ|recaptain> has joined the channel"){
         //console.log("getChannelMembers(token, message.channel: ")
         var channelMembers;
@@ -101,40 +136,6 @@ bot.message((message) => {
         //     }
         // });
     };
-
-  fn(message);
-});
-
-function getChannelMembers(token,channel){
-    return new Promise((resolve, reject) => {
-        slack.channels.info({token: token, channel: channel}, (err, data) => {
-            if (err) reject(err);
-            else resolve(data);
-            var channelMembers;
-            channelMembers = data.channel.members;
-            console.log(data);
-            console.log("channelMembers: " + channelMembers);
-            return channelMembers;
-        });
-    });
-}
-
-function openIMChannel(token, user){
-    slack.im.open({token: token, user: user}, (err, data) => {
-        // get each member of channels' direct message channel ID 
-        console.log(data);
-        console.log("Direct Message data: " + data.channel.id);
-        if (err) reject(err);
-        else resolve(data);
-        // console.log("User's Direct Message Channel ID: " + dmChannel);
-  });
-};
-
-function GetFirstWord(str) {
-  if (str.indexOf(' ' ) == -1)
-    return str;
-  else
-    return str.substr(0, str.indexOf(' ' ));
-};
+*/
 
 
