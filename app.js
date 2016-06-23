@@ -10,18 +10,6 @@ var bot = slack.rtm.client();
 var token = process.env.token;
 bot.listen({token:token});
 
-
-// introduction function.
-/*bot.started(function() {
-   slack.im.open({token, user: "U1EH544TV"}, (err, data) => {
-        slack.chat.postMessage({token, channel: data.channel.id, username: "recaptain", text: "Welcome to recaptain!", icon_url: "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png"}, (a, data) => {
-        console.log("@@@");
-})
-
-})
-});*/
-
-
 bot.message((message) => {
   let { channel, text, user, username, ts } = message;
 
@@ -31,7 +19,6 @@ bot.message((message) => {
   }
 
   const command_reg = [
-    //[/^recap|:\srecap|:recap/i, commands.recap],
     [/^help|:\shelp|:help/i, commands.help],
     [/^recap$/i, commands.onlyrecap]
   ];
@@ -40,7 +27,6 @@ bot.message((message) => {
   for(let r of command_reg) {
     if (r[0].exec(text) != null) {
       text = text.replace(r[0], '');
-
       fn = r[1];
     }
   }
@@ -70,7 +56,6 @@ function openIMChannel(token, user){
         console.log("Direct Message data: " + data.channel.id);
         if (err) reject(err);
         else resolve(data);
-        // console.log("User's Direct Message Channel ID: " + dmChannel);
   });
 };
 
