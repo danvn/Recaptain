@@ -39,9 +39,7 @@ exports.im = (token, user) => {
 
 exports.post = (token, channel, text, icon, username, attach) => {
   return new Promise((resolve, reject) => {
-    console.log("POST");
     slack.chat.postMessage({token, channel, text, icon_url: icon, username, attachments: JSON.stringify(attach)}, (err, data) => {
-      console.log("POST2");
       if (err) reject(err);
       else resolve(data);
     });
