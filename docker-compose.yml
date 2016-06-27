@@ -1,7 +1,9 @@
 elasticsearch:
-  image: elasticsearch  
+  image: elasticsearch
+  ports:
+    - "9200:9200"
 
-server:
+bot:
   build: .
   links:
     - elasticsearch
