@@ -12,10 +12,11 @@ bot.listen({token:token});
 
 bot.message((message) => {
   let { channel, text, user, username, ts } = message;
-
+  console.log(message);
   const command_reg = [
     [/^help|:\shelp|:help/i, commands.help],
-    [/^recap$/i, commands.onlyrecap]
+    [/^recap$/i, commands.onlyrecap],
+    [/^<@U1GF1N0CQ/i, commands.storeHistory] 
   ];
 
   let fn = () => null;
@@ -28,6 +29,7 @@ bot.message((message) => {
 
   message.text = text;
   fn(message);
+
 });
 
 function getChannelMembers(token,channel){
