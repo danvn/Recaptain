@@ -32,7 +32,12 @@ exports.recap = (message) => {
       return ast.channels
     })
     .then((result) => {
-      console.log("Channels: ", result);
+      for (var i = 0; i < result.length; i++){
+        result[i] = result[i].replace(/[^a-zA-Z0-9 ]/g, "");
+      }
+      for (var i = 0; i < result.length; i++){
+        slack.getChannelInfo(token, result[i]);
+      };
     })
 	  .catch((err) => {
 	    console.log(err);

@@ -55,3 +55,25 @@ exports.userdata = (token, user) => {
   });
 };
 
+exports.joinChannel = (token, name) => {
+  return new Promise((reslove, reject) => {
+    slack.channels.join({token, name}, (err, data)=> {
+      if (err) reject(err);
+      else resolve(data);
+    });
+  });
+};
+
+exports.getChannelInfo = (token, channel) => {
+  return new Promise((resolve, reject) => {
+    slack.channels.info({token, channel}, (err, data)=> {
+      if (err) reject (err);
+      else resolve(data);
+      console.log("Channel name: " + data.channel.name);
+
+    });
+  });
+};
+
+
+
