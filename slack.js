@@ -20,7 +20,7 @@ var history_recursive = (channel, arr) => (result) => {
       .then(history_recursive(channel, arr));
   } else {
     return arr;
-  }
+    };
 };
 
 exports.history = (channel, oldest) => {

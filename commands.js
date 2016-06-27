@@ -24,54 +24,15 @@ exports.storeHistory = (message) => {
 // Handles the `recap` command
 exports.recap = (message) => {
   let { channel, text, user, username, ts } = message;
-  console.log(text);
+  console.log("TXT: " + text);
 
   parse(text)
-    .then((ast) => slack.history("C1BBTSMGQ", ast.date)
-          .then((result) => {
-            return { messages: _.filter(result, (e) => e.text != null), ast };
-          }))
-	  .then((result) => {
-      let { messages, ast } = result;
-
-      let modules_list = [];
-      //check mentions and links
-      if(ast.mentions == true)
-        modules_list.push(modules.mentions(messages, message, ast));
-
-      if(ast.links == true)
-        modules_list.push(modules.links(messages, message, ast));
-
-
-      if((ast.links == false) && (ast.mentions == false))
-        modules_list.push(modules.keyword(messages, message, ast));
-
-      return Promise.all(modules_list);
-    })
-    .then((module_responses) => slack.im(token, user)
-        .then((result) => {
-          return { result, module_responses };
-        }))
-    .then((res) => {
-      let { result, module_responses } = res;
-
-      let message = {
-        username: "recapitan",
-        channel: result.channel.id,
-        text: "",
-        attach: _.map(module_responses, (e) => {
-          return {
-            text: e,
-            color: "#36af4f",
-            title: "Here is your recap!"
-          };
-        })
-      };
-
-      return slack.post(token, message.channel, message.text, icon, message.username, message.attach);
+    .then((ast) => {
+      console.log(ast.channels);
+      return ast.channels
     })
     .then((result) => {
-      console.log("message posted: ", result);
+      console.log("Channels: ", result);
     })
 	  .catch((err) => {
 	    console.log(err);
@@ -91,9 +52,9 @@ exports.onlyrecap = (message) => {
                 channel: result.channel.id,
                 text: "",
                 attach: [{
-                    text: "HEY",
+                    text: "#marketing",
                     color: "#36af4f",
-                    title: "What up"
+                    title: "What channel(s) would you like recapped?"
                 }]
             }
             return slack.post(token, message.channel, message.text, icon, message.username, message.attach);
@@ -105,7 +66,6 @@ exports.onlyrecap = (message) => {
 exports.help = (message, ast) => {
     console.log("they initiated help"); 
     let { channel, text, user, username, ts } = message;
-    
     getHandle(token, user)
         .then((result) => {
             return name = result;
@@ -131,7 +91,6 @@ exports.help = (message, ast) => {
 
 function getHandle(token, user) {
   return new Promise((resolve, reject) => {
-    console.log("INSIDE GETHANDLE " + user);
     slack.userdata(token, user) 
       .then((result) => {
         name = JSON.stringify(result.user.name);
