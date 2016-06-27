@@ -13,11 +13,6 @@ bot.listen({token:token});
 bot.message((message) => {
   let { channel, text, user, username, ts } = message;
 
-  if(GetFirstWord(text) == "<@U1GF1N0CQ>:") {
-    //Get string without bot mention
-    text = text.replace('<@U1GF1N0CQ>: ','');
-  }
-
   const command_reg = [
     [/^help|:\shelp|:help/i, commands.help],
     [/^recap$/i, commands.onlyrecap]
@@ -59,12 +54,7 @@ function openIMChannel(token, user){
   });
 };
 
-function GetFirstWord(str) {
-  if (str.indexOf(' ' ) == -1)
-    return str;
-  else
-    return str.substr(0, str.indexOf(' ' ));
-};
+
 
 // If recaptain is invited to a new channel
 /*

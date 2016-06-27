@@ -91,7 +91,7 @@ exports.onlyrecap = (message) => {
 exports.help = (message, ast) => {
     console.log("they initiated help"); 
     let { channel, text, user, username, ts } = message;
-
+    
     getHandle(token, user)
         .then((result) => {
             return name = result;
@@ -100,12 +100,15 @@ exports.help = (message, ast) => {
             return slack.im(token, user)
         })
         .then((result) => {
+           if(result.channel.id == channel) {
            channel = result.channel.id;
            username = "recaptain";
            text = ("Hey" + name  + ", Heard you needed help!");
 
-           attach =  [{"title": "How to use me", "text": "@recaptain: recap [keywords] [timeframe]", "color": "#36a64f"}, {"title": "Built in keywords", "text": "Mentions: Gets mentions of you with keywords \n Links: Gets links with keywords", "color": "#439FE0"}, {"title": "Example", "text": "@recaptain: links sales from past week \n This gets all the links with the keyword sales from the past week", "color": "#FF6600"}];
+           attach =  [{"title": "How to use me", "text": "All you have to do is type in recap", "color": "#36a64f"}]
            slack.post(token, channel, text, icon, username, attach)
+
+        }
        })
        .catch((err) => {
          console.log(err);
