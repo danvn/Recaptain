@@ -28,16 +28,24 @@ exports.recap = (message) => {
 
   parse(text)
     .then((ast) => {
-      console.log(ast.channels);
       return ast.channels
     })
     .then((result) => {
+      // Strip special characters
       for (var i = 0; i < result.length; i++){
         result[i] = result[i].replace(/[^a-zA-Z0-9 ]/g, "");
       }
+
+      // Get history for each channel id in array result
       for (var i = 0; i < result.length; i++){
-        slack.getChannelInfo(token, result[i]);
-      };
+        slack.history(result[i], message.ts);
+      }
+
+      // Get channel name so we can join it if we aren't bot isn't a member of that channel yet. 
+      // for (var i = 0; i < result.length; i++){
+      //   if (slack.getChannelInfo(token, result[i]) == true)
+      //     .then((result) => slack.history(token, result.channel.name))
+      // };
     })
 	  .catch((err) => {
 	    console.log(err);
