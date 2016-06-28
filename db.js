@@ -2,17 +2,15 @@ var Rebound = require('reboundodm');
 
 Rebound.connect('elasticsearch:9200');
 
-
 var messageSchema = Rebound.Schema({
   text: {
     type: String,
-    analyzer: 'not_analyzed'
-  }
+    analyzer: 'default'
+  },
+  ts: Number,
+  channel: String,
+  user: String,
+  team: String
 });
 
-var message = Rebound.modelIndex('channel', 'message', messageSchema);
-
-/*message.create({
-  text: "hello world",
-  ts: new Date().getTime() / 1000
-})*/
+exports.message = Rebound.modelIndex('channel', 'message', messageSchema);
