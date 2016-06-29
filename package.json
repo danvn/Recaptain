@@ -14,7 +14,8 @@
     "moment": "^2.13.0",
     "nlp-toolkit": "^0.2.6",
     "reboundodm": "^0.1.4",
-    "slack": "^7.3.0"
+    "slack": "^7.3.0",
+    "watson-developer-cloud": "^1.10.0"
   },
   "devDependencies": {
     "mocha": "^2.5.3",
