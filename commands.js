@@ -71,7 +71,7 @@ exports.onlyrecap = (message) => {
   console.log("Only recap intitated");
   let { channel, text, user, username, ts } = message;
 
-  slack.im(token, user)
+  slack.im(user)
     .then((result) => {
       if(result.channel.id == channel){
         return slack.history("C1MCA2P9V", moment().subtract(7, 'days'));
@@ -99,7 +99,7 @@ exports.onlyrecap = (message) => {
         text: JSON.stringify(result)
       };
 
-      return slack.post(token, message.channel, message.text, icon, message.username, message.attach);
+      return slack.post(message.channel, message.text, icon, message.username, message.attach);
     })
     .catch((err) => console.err("Error:", err));
 };

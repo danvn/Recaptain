@@ -29,7 +29,7 @@ exports.history = (channel, oldest) => {
   return history(channel, oldest)
     .then(history_recursive(channel, []))
     .then((result) => _.filter(result, (e) => e.text != null))
-    //.then((result) => console.log(result));
+    // .then((result) => console.log(result));
 };
 
 exports.im = (user) => {
@@ -43,7 +43,7 @@ exports.im = (user) => {
 
 exports.post = (channel, text, icon, username, attach) => {
   return new Promise((resolve, reject) => {
-    slack.chat.postMessage({token, channel, text, icon_url: icon, username, attachments: JSON.stringify(attach)}, (err, data) => {
+    slack.chat.postMessage({channel, text, icon_url: icon, username, attachments: JSON.stringify(attach)}, (err, data) => {
       if (err) reject(err);
       else resolve(data);
     });
