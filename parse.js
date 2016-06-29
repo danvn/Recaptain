@@ -5,7 +5,7 @@ var _ = require('lodash');
 module.exports = (text) => {
   return new Promise((resolve) => {
     let ast = {
-      keywords: [],
+      channels: [],
       mentions: false,
       links: false,
       date: moment().subtract(3, 'days')
@@ -25,7 +25,7 @@ module.exports = (text) => {
 
     nlp.stopwords(nlp.tokenizer(text), { defaultLang: 'en'  })
       .then((res) => {
-        ast.keywords = _.filter(text.split(/\s/i), (e) => e != '');
+        ast.channels = _.filter(text.split(/\s/i), (e) => e != '');
         resolve(ast);
       });
   });

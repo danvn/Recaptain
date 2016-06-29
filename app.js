@@ -14,13 +14,14 @@ var Rebound = require('reboundodm');
 Rebound.connect('elasticsearch:9200');
 
 bot.message((message) => {
-  let { channel, text, user, team, ts } = message;
+ let { channel, text, user, team, ts } = message;
   Rebound.getModel('channel', 'message').create(message);
 
-
   const command_reg = [
+    [/^recap\s/i, commands.recap],
     [/^help|:\shelp|:help/i, commands.help],
-    [/^recap$/i, commands.onlyrecap]
+    [/^recap$/i, commands.onlyrecap],
+    [/^<@U1GF1N0CQ/i, commands.storeHistory] 
   ];
 
   let fn = () => null;
@@ -33,6 +34,7 @@ bot.message((message) => {
 
   message.text = text;
   fn(message);
+
 });
 
 function getChannelMembers(token,channel){

@@ -18,9 +18,10 @@ var history_recursive = (channel, arr) => (result) => {
     var last_msg_time = result.messages[0].ts;
     return history(channel, moment.unix(last_msg_time))
       .then(history_recursive(channel, arr));
+      console.log(result);
   } else {
     return arr;
-  }
+    };
 };
 
 exports.history = (channel, oldest) => {
@@ -54,3 +55,27 @@ exports.userdata = (token, user) => {
     });
   });
 };
+
+exports.joinChannel = (token, name) => {
+  return new Promise((resolve, reject) => {
+    slack.channels.join({token, name}, (err, data)=> {
+      if (err) reject(err);
+      else resolve(data);
+      console.log("Joining channel: " + name);
+    });
+  });
+};
+
+exports.getChannelInfo = (token, channel) => {
+  return new Promise((resolve, reject) => {
+    slack.channels.info({token, channel}, (err, data)=> {
+      if (err) reject (err);
+      else resolve(data);
+      console.log("Channel is_member: " + data.channel.is_member);
+      return data.channel.is_member;
+    });
+  });
+};
+
+
+
