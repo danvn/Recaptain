@@ -33,21 +33,42 @@ exports.recap = (message) => {
       for (var i = 0; i < result.length; i++){
         result[i] = result[i].replace(/[^a-zA-Z0-9 ]/g, "");
       }
-
-      // Get history for each channel id in array result
-      for (var i = 0; i < result.length; i++){
-        slack.history(result[i], message.ts);
-      }
-
-      // Get channel name so we can join it if we aren't bot isn't a member of that channel yet. 
-      // for (var i = 0; i < result.length; i++){
-      //   if (slack.getChannelInfo(token, result[i]) == true)
-      //     .then((result) => slack.history(token, result.channel.name))
-      // };
+      return result
     })
+    .then((result) => {     
+        console.log(result);
+        return result;
+    })
+    
+      // Get history for each channel id in array result
+      /*for (var i = 0; i < result.length; i++){
+        console.log("INSIDE");
+        slack.history(result[i], message.ts)
+        .then((result) => {
+            console.log("Second");
+            return result;
+        })
+      }
+      return ("hello")
+      })*/
+
+      
 	  .catch((err) => {
-	    console.log(err);
-	  });
+      slack.im(token, user)
+        .then((result) => {
+        let message = {
+        username: "recaptain",
+        channel: result.channel.id,
+        text: "",
+            attach: [{
+            title: "Whoops!",
+            color: "#FF0000",
+            text: "One of the channels you entered is not valid!"
+            }]
+         }
+        return slack.post(message.channel, message.text, icon, message.username, message.attach);
+     })
+	 });
 };
 
 exports.onlyrecap = (message) => {
@@ -85,12 +106,12 @@ exports.onlyrecap = (message) => {
 exports.help = (message, ast) => {
     console.log("they initiated help"); 
     let { channel, text, user, username, ts } = message;
-    getHandle(token, user)
+    getHandle(user)
         .then((result) => {
             return name = result;
         })
         .then((result) => {
-            return slack.im(token, user)
+            return slack.im(user)
         })
         .then((result) => {
            if(result.channel.id == channel) {
@@ -99,7 +120,7 @@ exports.help = (message, ast) => {
            text = ("Hey" + name  + ", Heard you needed help!");
 
            attach =  [{"title": "How to use me", "text": "All you have to do is type in recap", "color": "#36a64f"}]
-           slack.post(token, channel, text, icon, username, attach)
+           slack.post(channel, text, icon, username, attach)
 
         }
        })
@@ -108,7 +129,7 @@ exports.help = (message, ast) => {
        });
 };
 
-function getHandle(token, user) {
+function getHandle(user) {
   return new Promise((resolve, reject) => {
     slack.userdata(token, user) 
       .then((result) => {
@@ -119,3 +140,4 @@ function getHandle(token, user) {
       });
   });
 };
+
