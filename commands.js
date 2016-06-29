@@ -18,7 +18,7 @@ exports.storeHistory = (message) => {
       let { messages, ast } = result;
       console.log(messages);
       return (messages);
-    })
+    });
 };
 // Handles the `recap` command
 exports.recap = (message) => {
