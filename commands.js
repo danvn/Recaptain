@@ -4,16 +4,15 @@ var modules = require('./modules');
 var _ = require('lodash');
 var slack = require('./slack');
 var parse = require('./parse');
+var watson = require('./watson');
+var moment = require('moment');
 
 var icon = "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png";
 
 exports.storeHistory = (message) => {
     let {channel, text, user, username, ts } = message;
     parse(text)
-     .then((ast) => slack.history(channel, ast.date)
-          .then((result) => {
-            return { messages: _.filter(result, (e) => e.text != null), ast };
-          }))
+    .then((ast) => slack.history(channel, ast.date))
 	  .then((result) => {
       let { messages, ast } = result;
       console.log(messages);
@@ -52,27 +51,35 @@ exports.recap = (message) => {
 };
 
 exports.onlyrecap = (message) => {
-    console.log("Only recap intitated");
-    let { channel, text, user, username, ts } = message;
-    slack.im(token, user)
-      .then((result) => {
-        if(result.channel.id == channel){
-            username = "recaptain";
-            
-            let message = {
-                username: "recaptain",
-                channel: result.channel.id,
-                text: "",
-                attach: [{
-                    text: "#marketing",
-                    color: "#36af4f",
-                    title: "What channel(s) would you like recapped?"
-                }]
-            }
-            return slack.post(token, message.channel, message.text, icon, message.username, message.attach);
-        }
-        else console.log("not a dm");
-        })  
+  console.log("Only recap intitated");
+  let { channel, text, user, username, ts } = message;
+
+  slack.im(token, user)
+    .then((result) => {
+      if(result.channel.id == channel){
+        return slack.history("C0AS7C51D", moment().subtract(7, 'days'));
+      }
+      else return Promise.reject("not a channel");
+    })
+    .then((result) => {
+      let messages = _.map(result.messages, (e) => {
+        return e.text;
+      });
+
+      return watson.get_keywords(_.join(messages, '\n'));
+    })
+    .then((result) => {
+      username = "recaptain";
+
+      let message = {
+        username: "recaptain",
+        channel: channel,
+        text: JSON.stringify(result)
+      };
+
+      return slack.post(token, message.channel, message.text, icon, message.username, message.attach);
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.help = (message, ast) => {

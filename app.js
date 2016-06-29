@@ -10,12 +10,12 @@ var bot = slack.rtm.client();
 var token = process.env.token;
 bot.listen({token:token});
 
-var Rebound = require('reboundodm');
-Rebound.connect('elasticsearch:9200');
+
+
 
 bot.message((message) => {
  let { channel, text, user, team, ts } = message;
-  Rebound.getModel('channel', 'message').create(message);
+
 
   const command_reg = [
     [/^recap\s/i, commands.recap],
