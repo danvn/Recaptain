@@ -35,25 +35,21 @@ exports.recap = (message) => {
       }
       return result
     })
-    .then((result) => {     
-        console.log(result);
+    .then((result) => { // result is requested #channels in array    
+        console.log("result: " + result);
         return result;
     })
-    
-      // Get history for each channel id in array result
-      /*for (var i = 0; i < result.length; i++){
-        console.log("INSIDE");
-        slack.history(result[i], message.ts)
-        .then((result) => {
-            console.log("Second");
-            return result;
-        })
-      }
-      return ("hello")
-      })*/
-
-      
+    .then((result) => {
+        console.log(result);
+        for (var i = 0; i < result.length; i++){
+          console.log("fetching history of " + result[i]);
+          slack.history(result[i]);
+        }
+        return result
+    }) 
+  
 	  .catch((err) => {
+      console.log(err);
       slack.im(user)
         .then((result) => {
         let message = {

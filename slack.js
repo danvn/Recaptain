@@ -28,7 +28,8 @@ exports.history = (channel, oldest) => {
 
   return history(channel, oldest)
     .then(history_recursive(channel, []))
-    .then((result) => _.filter(result, (e) => e.text != null));
+    .then((result) => _.filter(result, (e) => e.text != null))
+    //.then((result) => console.log(result));
 };
 
 exports.im = (user) => {
