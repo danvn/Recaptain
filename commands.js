@@ -72,26 +72,6 @@ exports.recap = (message) => {
 };
 
 exports.onlyrecap = (message) => {
-    console.log("Only recap intitated");
-    let { channel, text, user, username, ts } = message;
-    slack.im(user)
-      .then((result) => {
-        if(result.channel.id == channel){
-            
-            let message = {
-                username: "recaptain",
-                channel: result.channel.id,
-                text: "",
-                attach: [{
-                    text: "#marketing",
-                    color: "#36af4f",
-                    title: "What channel(s) would you like recapped?"
-                }]
-            }
-            return slack.post(message.channel, message.text, icon, message.username, message.attach);
-        }
-        else console.log("not a dm");
-        })  
   console.log("Only recap intitated");
   let { channel, text, user, username, ts } = message;
 
