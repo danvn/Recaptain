@@ -7,7 +7,6 @@ var parse = require('./parse');
 
 var icon = "https://avatars.slack-edge.com/2016-06-13/50511039062_3e2a383deda13028950f_32.png";
 
-
 exports.storeHistory = (message) => {
     let {channel, text, user, username, ts } = message;
     parse(text)
@@ -19,7 +18,7 @@ exports.storeHistory = (message) => {
       let { messages, ast } = result;
       console.log(messages);
       return (messages);
-    })
+    });
 };
 // Handles the `recap` command
 exports.recap = (message) => {
