@@ -18,15 +18,17 @@ var history_recursive = (channel, arr) => (result) => {
     var last_msg_time = result.messages[0].ts;
     return history(channel, moment.unix(last_msg_time))
       .then(history_recursive(channel, arr));
-      console.log(result);
   } else {
     return arr;
-    };
+  };
 };
 
 exports.history = (channel, oldest) => {
+  if (!oldest) oldest = moment(0);
+
   return history(channel, oldest)
-    .then(history_recursive(channel, []));
+    .then(history_recursive(channel, []))
+    .then((result) => _.filter(result, (e) => e.text != null));
 };
 
 exports.im = (user) => {

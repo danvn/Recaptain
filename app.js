@@ -10,12 +10,12 @@ var bot = slack.rtm.client();
 var token = process.env.token;
 bot.listen({token:token});
 
-var Rebound = require('reboundodm');
-Rebound.connect('elasticsearch:9200');
+
+
 
 bot.message((message) => {
  let { channel, text, user, team, ts } = message;
-  Rebound.getModel('channel', 'message').create(message);
+
 
   const command_reg = [
     [/^recap\s/i, commands.recap],
@@ -37,9 +37,9 @@ bot.message((message) => {
 
 });
 
-function getChannelMembers(token,channel){
+function getChannelMembers(channel){
     return new Promise((resolve, reject) => {
-        slack.channels.info({token: token, channel: channel}, (err, data) => {
+        slack.channels.info({token, channel: channel}, (err, data) => {
             if (err) reject(err);
             else resolve(data);
             var channelMembers;
@@ -51,8 +51,8 @@ function getChannelMembers(token,channel){
     });
 }
 
-function openIMChannel(token, user){
-    slack.im.open({token: token, user: user}, (err, data) => {
+function openIMChannel(user){
+    slack.im.open({user: user}, (err, data) => {
         // get each member of channels' direct message channel ID 
         console.log(data);
         console.log("Direct Message data: " + data.channel.id);
