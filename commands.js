@@ -103,7 +103,7 @@ exports.onlyrecap = (message) => {
         text: JSON.stringify(result)
       };
 
-      return slack.post(token, message.channel, message.text, icon, message.username, message.attach);
+      return slack.post(message.channel, message.text, icon, message.username, message.attach);
     })
     .catch((err) => console.err("Error:", err));
 };
