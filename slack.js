@@ -24,7 +24,7 @@ var history_recursive = (channel, arr) => (result) => {
 };
 
 exports.history = (channel, oldest) => {
-  if (!oldest) oldest = moment(0);
+  if (!oldest) oldest = moment().subtract(1, 'weeks');
 
   return history(channel, oldest)
     .then(history_recursive(channel, []))

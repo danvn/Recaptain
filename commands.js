@@ -78,16 +78,21 @@ exports.onlyrecap = (message) => {
   slack.im(token, user)
     .then((result) => {
       if(result.channel.id == channel){
-        return slack.history("C0AS7C51D", moment().subtract(7, 'days'));
+        return slack.history("C1MCA2P9V", moment().subtract(7, 'days'));
       }
-      else return Promise.reject("not a channel");
+      else {
+        return Promise.reject("not a channel");
+      }
     })
     .then((result) => {
-      let messages = _.map(result.messages, (e) => {
+      let messages = _.map(result, (e) => {
         return e.text;
       });
 
-      return watson.get_keywords(_.join(messages, '\n'));
+      let text = _.join(messages, '\n');
+
+      console.log(text)
+      return watson.get_keywords(text);
     })
     .then((result) => {
       username = "recaptain";
@@ -100,7 +105,7 @@ exports.onlyrecap = (message) => {
 
       return slack.post(token, message.channel, message.text, icon, message.username, message.attach);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.err("Error:", err));
 };
 
 exports.help = (message, ast) => {
