@@ -55,7 +55,7 @@ exports.recap = (message) => {
 
       
 	  .catch((err) => {
-      slack.im(token, user)
+      slack.im(user)
         .then((result) => {
         let message = {
         username: "recaptain",
@@ -75,7 +75,7 @@ exports.recap = (message) => {
 exports.onlyrecap = (message) => {
     console.log("Only recap intitated");
     let { channel, text, user, username, ts } = message;
-    slack.im(token, user)
+    slack.im(user)
       .then((result) => {
         if(result.channel.id == channel){
             
@@ -123,7 +123,7 @@ exports.help = (message, ast) => {
 
 function getHandle(user) {
   return new Promise((resolve, reject) => {
-    slack.userdata(token, user) 
+    slack.userdata(user) 
       .then((result) => {
         name = JSON.stringify(result.user.name);
         console.log(name);

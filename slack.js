@@ -29,7 +29,7 @@ exports.history = (channel, oldest) => {
     .then(history_recursive(channel, []));
 };
 
-exports.im = (token, user) => {
+exports.im = (user) => {
   return new Promise((resolve, reject) => {
     slack.im.open({token, user}, (err, data) => {
       if (err) reject(err);
@@ -38,7 +38,7 @@ exports.im = (token, user) => {
   });
 };
 
-exports.post = (token, channel, text, icon, username, attach) => {
+exports.post = (channel, text, icon, username, attach) => {
   return new Promise((resolve, reject) => {
     slack.chat.postMessage({token, channel, text, icon_url: icon, username, attachments: JSON.stringify(attach)}, (err, data) => {
       if (err) reject(err);
@@ -47,7 +47,7 @@ exports.post = (token, channel, text, icon, username, attach) => {
   });
 };
 
-exports.userdata = (token, user) => {
+exports.userdata = (user) => {
   return new Promise((resolve, reject) => {
     slack.users.info({token, user}, (err, data) => {
       if (err) reject(err);
@@ -56,7 +56,7 @@ exports.userdata = (token, user) => {
   });
 };
 
-exports.joinChannel = (token, name) => {
+exports.joinChannel = (name) => {
   return new Promise((resolve, reject) => {
     slack.channels.join({token, name}, (err, data)=> {
       if (err) reject(err);
@@ -66,16 +66,16 @@ exports.joinChannel = (token, name) => {
   });
 };
 
-exports.getChannelInfo = (token, channel) => {
+exports.getMembers = (channel) => {
   return new Promise((resolve, reject) => {
     slack.channels.info({token, channel}, (err, data)=> {
       if (err) reject (err);
-      else resolve(data);
-      console.log("Channel is_member: " + data.channel.is_member);
-      return data.channel.is_member;
+      else {
+      console.log("Channel members: " + data.channel.members);
+      resolve (data.channel.members);
+      };
     });
   });
 };
-
 
 
