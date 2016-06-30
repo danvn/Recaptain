@@ -27,7 +27,7 @@ exports.recap = (message) => {
   parse(text)
     .then((ast) => {
       if (ast.channels.length != 0) return ast.channels
-      else return Promise.reject("Please enter channels");
+      else return Promise.reject("Please Enter Channels! For example, you should use me like this... \n recap #channel1 #channel2 #channel3");
     })
     .then((result) => {
       // Strip special characters
@@ -92,41 +92,6 @@ exports.recap = (message) => {
         slack.post(message.channel, message.text, icon, message.username, message.attach);
      })
 	 });
-};
-
-exports.onlyrecap = (message) => {
-  console.log("Only recap intitated");
-  let { channel, text, user, username, ts } = message;
-
-  slack.im(user)
-    .then((result) => {
-      if(result.channel.id == channel){
-        console.log("IN HERE");
-        return Promise.reject("not a channel");
-      }
-    })
-    .then((result) => {
-      let messages = _.map(result, (e) => {
-        return e.text;
-      });
-
-      let text = _.join(messages, '\n');
-
-      console.log(text)
-      return watson.get_keywords(text);
-    })
-    .then((result) => {
-      username = "recaptain";
-
-      let message = {
-        username: "recaptain",
-        channel: channel,
-        text: JSON.stringify(result)
-      };
-
-      return slack.post(message.channel, message.text, icon, message.username, message.attach);
-    })
-    .catch((err) => console.log("Error:", err));
 };
 
 exports.help = (message, ast) => {
