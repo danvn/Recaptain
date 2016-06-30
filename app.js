@@ -18,9 +18,8 @@ bot.message((message) => {
 
 
   const command_reg = [
-    [/^recap\s/i, commands.recap],
+    [/^recap/i, commands.recap],
     [/^help|:\shelp|:help/i, commands.help],
-    [/^recap$/i, commands.onlyrecap],
     [/^<@U1GF1N0CQ/i, commands.storeHistory] 
   ];
 
