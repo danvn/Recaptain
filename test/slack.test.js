@@ -1,4 +1,4 @@
-var slack = require('./slack');
+var slack = require('../lib/slack');
 var moment = require('moment');
 
 

@@ -1,4 +1,4 @@
-var modules = require('./modules');
+var modules = require('../lib/modules');
 var should = require('should');
 
 describe('Module Tests', () => {

@@ -1,5 +1,5 @@
 var should = require('should');
-var parse = require('./parse');
+var parse = require('../lib/parse');
 var moment = require('moment');
 
 describe('Parser Tests', () => {
