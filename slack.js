@@ -42,9 +42,13 @@ exports.im = (user) => {
 };
 
 exports.post = (channel, text, icon, username, attach) => {
+  console.log("in post");
   return new Promise((resolve, reject) => {
-    slack.chat.postMessage({channel, text, icon_url: icon, username, attachments: JSON.stringify(attach)}, (err, data) => {
-      if (err) reject(err);
+    slack.chat.postMessage({token, channel, text, icon_url: icon, username, attachments: JSON.stringify(attach)}, (err, data) => {
+      if (err) {
+        console.log(err)
+        reject(err);
+      }
       else resolve(data);
     });
   });

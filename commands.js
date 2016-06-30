@@ -40,18 +40,21 @@ exports.recap = (message) => {
         return result;
     })
     .then((result) => {
+        let history_list = [];
         console.log(result);
         for (var i = 0; i < result.length; i++){
           console.log("fetching history of " + result[i]);
-          slack.history(result[i]);
+          history_list.push(slack.history(result[i]));
         }
-        return result
+        return Promise.all(history_list);
     }) 
   
 	  .catch((err) => {
       console.log(err);
       slack.im(user)
         .then((result) => {
+        console.log(result.channel.id);
+        console.log("in promise");
         let message = {
         username: "recaptain",
         channel: result.channel.id,
@@ -62,7 +65,7 @@ exports.recap = (message) => {
             text: "One of the channels you entered is not valid!"
             }]
          }
-        return slack.post(message.channel, message.text, icon, message.username, message.attach);
+        slack.post(message.channel, message.text, icon, message.username, message.attach);
      })
 	 });
 };
