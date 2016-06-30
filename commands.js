@@ -36,10 +36,6 @@ exports.recap = (message) => {
       }
       return result
     })
-    .then((result) => { // result is requested #channels in array    
-        console.log("result: " + result);
-        return result;
-    })
     .then((result) => {
         let history_list = [];
         console.log(result);
@@ -49,20 +45,20 @@ exports.recap = (message) => {
         }
         return Promise.all(history_list);
     }) 
-  .then((history_list) => {
+    .then((history_list) => {
       console.log(history_list);
-      
+
       return Promise.all(_.map(history_list, (e) => {
-      let messages = _.map(e, (esta) => {
-        return esta.text;
-      });
+        let messages = _.map(e, (esta) => {
+          return esta.text;
+        });
 
-      let text = _.join(messages, '\n');
+        let text = _.join(messages, '\n');
 
-      console.log(text) 
-      return watson.get_keywords(text);
-  
-}))
+        console.log(text) 
+        return watson.get_keywords(text);
+
+      }));
     })
     .then((result) => {
       let message = {
