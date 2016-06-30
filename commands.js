@@ -26,7 +26,8 @@ exports.recap = (message) => {
 
   parse(text)
     .then((ast) => {
-      return ast.channels
+      if (ast.channels.length != 0) return ast.channels
+      else return Promise.reject("Please enter channels");
     })
     .then((result) => {
       // Strip special characters
@@ -40,18 +41,44 @@ exports.recap = (message) => {
         return result;
     })
     .then((result) => {
+        let history_list = [];
         console.log(result);
         for (var i = 0; i < result.length; i++){
           console.log("fetching history of " + result[i]);
-          slack.history(result[i]);
+          history_list.push(slack.history(result[i]));
         }
-        return result
+        return Promise.all(history_list);
     }) 
+  .then((history_list) => {
+      console.log(history_list);
+      
+      return Promise.all(_.map(history_list, (e) => {
+      let messages = _.map(e, (esta) => {
+        return esta.text;
+      });
+
+      let text = _.join(messages, '\n');
+
+      console.log(text) 
+      return watson.get_keywords(text);
   
+}))
+    })
+    .then((result) => {
+      let message = {
+        username: "recaptain",
+        channel: channel,
+        text: JSON.stringify(result)
+      };
+
+      return slack.post(message.channel, message.text, icon, message.username, message.attach);
+})
+ 
 	  .catch((err) => {
       console.log(err);
       slack.im(user)
         .then((result) => {
+        console.log("in promise");
         let message = {
         username: "recaptain",
         channel: result.channel.id,
@@ -62,7 +89,7 @@ exports.recap = (message) => {
             text: "One of the channels you entered is not valid!"
             }]
          }
-        return slack.post(message.channel, message.text, icon, message.username, message.attach);
+        slack.post(message.channel, message.text, icon, message.username, message.attach);
      })
 	 });
 };
@@ -74,9 +101,7 @@ exports.onlyrecap = (message) => {
   slack.im(user)
     .then((result) => {
       if(result.channel.id == channel){
-        return slack.history("C1MCA2P9V", moment().subtract(7, 'days'));
-      }
-      else {
+        console.log("IN HERE");
         return Promise.reject("not a channel");
       }
     })
@@ -101,7 +126,7 @@ exports.onlyrecap = (message) => {
 
       return slack.post(message.channel, message.text, icon, message.username, message.attach);
     })
-    .catch((err) => console.err("Error:", err));
+    .catch((err) => console.log("Error:", err));
 };
 
 exports.help = (message, ast) => {
