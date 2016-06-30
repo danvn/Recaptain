@@ -22,7 +22,7 @@ exports.storeHistory = (message) => {
 // Handles the `recap` command
 exports.recap = (message) => {
   let { channel, text, user, username, ts } = message;
-  console.log("TXT: " + text);
+  console.log("TXT: ", text);
 
   parse(text)
     .then((ast) => {
@@ -86,7 +86,7 @@ exports.recap = (message) => {
             attach: [{
             title: "Whoops!",
             color: "#FF0000",
-            text: "One of the channels you entered is not valid!"
+            text: err
             }]
          }
         slack.post(message.channel, message.text, icon, message.username, message.attach);

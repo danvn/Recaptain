@@ -22,6 +22,7 @@ module.exports = (text) => {
       text = text.replace(m[0], '');
       ast[m[1]] = true;
     }
+    text += " "; 
 
     nlp.stopwords(nlp.tokenizer(text), { defaultLang: 'en'  })
       .then((res) => {
