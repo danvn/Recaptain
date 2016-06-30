@@ -143,9 +143,9 @@ exports.help = (message, ast) => {
            if(result.channel.id == channel) {
            channel = result.channel.id;
            username = "recaptain";
-           text = ("Hey" + name  + ", Heard you needed help!");
+           text = ("Hey " + name  + ", heard you needed help!");
 
-           attach =  [{"title": "How to use me", "text": "All you have to do is type in recap", "color": "#36a64f"}]
+           attach =  [{"title": "How to use me:", "text": "type 'recap #channel_name1 #channel_name2 ...' to get a summary of the channels", "color": "#36a64f"}]
            slack.post(channel, text, icon, username, attach)
 
         }
@@ -160,6 +160,7 @@ function getHandle(user) {
     slack.userdata(user) 
       .then((result) => {
         name = JSON.stringify(result.user.name);
+        name = name.replace(/[^a-zA-Z0-9 ]/g, "")
         console.log(name);
         resolve(name);
         //return name;
