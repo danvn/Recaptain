@@ -5,8 +5,6 @@ elasticsearch:
 
 bot:
   build: .
-  links:
-    - elasticsearch
   volumes:
     - ".:/src/app"
   environment:
