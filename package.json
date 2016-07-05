@@ -10,6 +10,7 @@
   "author": "ReadyTalk",
   "license": "UNLICENSED",
   "dependencies": {
+    "huh": "^1.1.4",
     "lodash": "^4.13.1",
     "moment": "^2.13.0",
     "nlp-toolkit": "^0.2.6",
