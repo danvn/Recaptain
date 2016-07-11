@@ -20,6 +20,13 @@ from root dir, run:
 
 `token=... npm start`
 
+## Production Docker
+
+```
+docker build -f Dockerfile-prod -t "recapitan-prod" .
+docker run recapitan-prod --env=TOKEN=....
+```
+
 ## Usage
 Once Recaptain is in the slack team, simple 'Direct Message' the bot.
 The avaliable commands are:
