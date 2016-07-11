@@ -16,14 +16,15 @@ bot.listen({token:token});
 bot.message((message) => {
  let { channel, text, user, team, ts } = message;
 
+ console.log(user, text)
+
 
   const command_reg = [
     [/^recap/i, commands.recap],
     [/^help|:\shelp|:help/i, commands.help],
-    [/^<@U1GF1N0CQ/i, commands.storeHistory] 
   ];
 
-  let fn = () => null;
+  let fn = (a) => null;
   for(let r of command_reg) {
     if (r[0].exec(text) != null) {
       text = text.replace(r[0], '');
