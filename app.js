@@ -11,8 +11,6 @@ var token = process.env.token;
 bot.listen({token:token});
 
 
-
-
 bot.message((message) => {
  let { channel, text, user, team, ts } = message;
 
@@ -21,7 +19,7 @@ bot.message((message) => {
 
   const command_reg = [
     [/^recap/i, commands.recap],
-    [/^help|:\shelp|:help/i, commands.help],
+    [/^help|:\shelp|:help/i, commands.help]
   ];
 
   let fn = (a) => null;
