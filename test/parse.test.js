@@ -84,4 +84,12 @@ describe('Parser Tests', () => {
         });
     });
   });
+  describe('Keyword Extractor', () => {
+    it("keyword", () => {
+    return parse('recap #general asdf')
+      .then((result) => {
+        result.keywords.should.be.asdf;
+      });
+    });
+  });
 });
