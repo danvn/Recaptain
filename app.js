@@ -4,7 +4,6 @@
 var _ = require('lodash');
 var commands = require('./lib/commands');
 var parse = require('./lib/parse');
-var db = require('./lib/db');
 var slack = require('slack');
 var bot = slack.rtm.client();
 var token = process.env.token;
@@ -38,20 +37,6 @@ bot.message((message) => {
     // call some command for the rest of the tuorial
   }
 });
-
-function getChannelMembers(channel){
-    return new Promise((resolve, reject) => {
-        slack.channels.info({token, channel: channel}, (err, data) => {
-            if (err) reject(err);
-            else resolve(data);
-            var channelMembers;
-            channelMembers = data.channel.members;
-            console.log(data);
-            console.log("channelMembers: " + channelMembers);
-            return channelMembers;
-        });
-    });
-}
 
 function openIMChannel(user){
     slack.im.open({user: user}, (err, data) => {
