@@ -10,11 +10,9 @@ var bot = slack.rtm.client();
 var token = process.env.token;
 bot.listen({token:token});
 
-
-
-
+var users_in_convo = {};
 bot.message((message) => {
- let { channel, text, user, team, ts } = message;
+ let { channel, text, user, username, team, ts } = message;
 
  console.log(user, text)
 
@@ -22,9 +20,10 @@ bot.message((message) => {
   const command_reg = [
     [/^recap/i, commands.recap],
     [/^help|:\shelp|:help/i, commands.help],
+    [/^hi/i, commands.hi]
   ];
 
-  let fn = (a) => null;
+  let fn = null;
   for(let r of command_reg) {
     if (r[0].exec(text) != null) {
       text = text.replace(r[0], '');
@@ -33,8 +32,11 @@ bot.message((message) => {
   }
 
   message.text = text;
-  fn(message);
-
+  if (fn) {
+    fn(message, users_in_convo);
+  } else if(users_in_convo[username]) {
+    // call some command for the rest of the tuorial
+  }
 });
 
 function getChannelMembers(channel){
