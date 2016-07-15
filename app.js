@@ -39,20 +39,6 @@ bot.message((message) => {
   }
 });
 
-function getChannelMembers(channel){
-    return new Promise((resolve, reject) => {
-        slack.channels.info({token, channel: channel}, (err, data) => {
-            if (err) reject(err);
-            else resolve(data);
-            var channelMembers;
-            channelMembers = data.channel.members;
-            console.log(data);
-            console.log("channelMembers: " + channelMembers);
-            return channelMembers;
-        });
-    });
-}
-
 function openIMChannel(user){
     slack.im.open({user: user}, (err, data) => {
         // get each member of channels' direct message channel ID 
