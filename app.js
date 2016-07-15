@@ -4,7 +4,6 @@
 var _ = require('lodash');
 var commands = require('./lib/commands');
 var parse = require('./lib/parse');
-var db = require('./lib/db');
 var slack = require('slack');
 var bot = slack.rtm.client();
 var token = process.env.token;
