@@ -1,11 +1,13 @@
 FROM node:6.0
 
 RUN mkdir /src
-RUN npm i -g nodemon
 
 WORKDIR /src
 
 COPY package.json package.json
+COPY . /src
 RUN npm install
 
-CMD ["nodemon", "app", "--legacy-watch"]
+ENV NODE_ENV=production
+
+CMD ["node", "app.js"]
