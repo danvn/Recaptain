@@ -36,7 +36,6 @@
         closeOnConfirm: false,
         inputPlaceholder: "Insert Your Custom Bot Token Here"
     }, function (inputValue) {
-        var userToken = inputvalue;
         if (inputValue === false) return false;
         if (inputValue === "") {
         swal.showInputError("Please Enter Your Token!");
@@ -45,7 +44,7 @@
         $.ajax({
             url:'/input',
             type:'POST',
-            data: orderToken,
+            data: inputValue,
             dataType: "text",
             success: function(){
               console.log("Ajax is working");
