@@ -38,8 +38,12 @@
     }, function (inputValue) {
         if (inputValue === false) return false;
         if (inputValue === "") {
-        swal.showInputError("Please Enter Your Token!");
-        return false
+            swal.showInputError("Please Enter Your Token!");
+            return false
+        }
+        if (inputValue.length != 41) {
+            swal.showInputError("Please enter a valid token!");
+            return false
         }
         $.ajax({
             url:'/input',
