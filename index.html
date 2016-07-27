@@ -35,12 +35,30 @@
         closeOnConfirm: false,
         inputPlaceholder: "Insert Your Custom Bot Token Here"
     }, function (inputValue) {
+        var userToken = inputvalue;
         if (inputValue === false) return false;
         if (inputValue === "") {
         swal.showInputError("Please Enter Your Token!");
         return false
         }
-        swal("All set!", "Double Check Your Token Is Correct \n " +     inputValue, "success");
+        $.ajax({
+            url:'/input',
+            type:'POST',
+            data: orderToken,
+            dataType: "text",
+            success: function(){
+              console.log("Ajax is working");
+            },
+            error: function(e){
+              console.log(e);
+            }
+        })
+        .done(function(data){
+            swal("All set!", "Double Check Your Token Is Correct \n " +     inputValue, "success");
+        })
+        .error(function(data){
+            swal("Oops", "We couldn't connect to the server!", "error");
+        });
 });
     $('.ui-btn').css('width', '50%');
 

@@ -1,7 +1,10 @@
-elasticsearch:
-  image: elasticsearch
-  ports:
-    - "9200:9200"
+postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=Recaptain
+      - POSTGRES_PASSWORD=chipotle
 
 bot:
   build: .
